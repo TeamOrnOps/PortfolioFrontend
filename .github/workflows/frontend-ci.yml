@@ -1,0 +1,45 @@
+name: Frontend CI (Validate)
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+  push:
+    branches: [ develop, main ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcb5dd907a8 # v5.0.0
+
+      - name: Validate HTML files
+        run: |
+          find . -name "*.html" -type f | while read file; do
+            echo "Checking $file"
+            grep -q "<!DOCTYPE" "$file" || echo "Warning: $file missing DOCTYPE"
+          done
+
+      - name: Check for syntax errors in JS files
+        run: |
+          find . -name "*.js" -type f | while read file; do
+            echo "Checking $file"
+            node -c "$file" || exit 1
+          done
+
+      - name: Verify CSS files exist
+        run: |
+          find . -name "*.css" -type f | while read file; do
+            echo "Found CSS: $file"
+          done
+
+      - name: List frontend structure
+        run: |
+          echo "Frontend structure:"
+          tree -L 3 -I 'node_modules|.git' || ls -R
