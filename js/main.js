@@ -1,5 +1,6 @@
 import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
+import { renderLoginView } from './views/loginview.js';
 
 // Routes config (maps hash routes to view render functions)
 const routes = {
@@ -7,6 +8,7 @@ const routes = {
     '/': renderFrontPage,
     '/projects': renderFrontPage,
     '/project/:id': renderPresentationView,
+    '/login': renderLoginView,
 };
 
 // Get current route from URL hash
