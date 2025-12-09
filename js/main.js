@@ -38,7 +38,6 @@ function matchRoute(route, hash) {
 
 // Router function for navigation handling
 // Follows single responsibility - ONLY routing logic
-// TODO: change inline CSS with correct CSS reference (future)
 async function router() {
     const hash = getCurrentRoute();
     const mainContent = document.getElementById('main-content');
@@ -46,7 +45,7 @@ async function router() {
     let matchedRoute = null;
     let params = {};
 
-    // find first match to current hash, capture its params, stop.
+    // Find first match to current hash, capture its params, stop
     for (const [route, renderFunction] of Object.entries(routes)) {
         const match = matchRoute(route, hash);
         if (match !== null) {
@@ -58,7 +57,11 @@ async function router() {
 
     if (matchedRoute) {
         try {
-            const html = await matchedRoute(params);
+            // Pass null to frontpage, pass params object to other views (frontpage has no params)
+            const html = matchedRoute === renderFrontPage
+                ? await matchedRoute(null)
+                : await matchedRoute(params);
+
             mainContent.innerHTML = html;
         } catch (error) {
             console.error('Error rendering view:', error);
