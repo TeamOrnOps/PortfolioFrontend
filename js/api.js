@@ -106,3 +106,11 @@ export async function deleteImage(projectId, imageId) {
         method: 'DELETE',
     });
 }
+
+// login user and get JWT token
+export async function login(credentials) {
+    return apiFetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+    });
+}
