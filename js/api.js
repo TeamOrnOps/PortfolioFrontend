@@ -63,7 +63,7 @@ export async function createProject(formData) {
     return apiFetch(`${API_BASE_URL}/projects`, {
         method: 'POST',
         headers: {
-            // Browser sets Content-Type for image uploads automatically
+            // Browser sets Content-Type for multipart/form-data automatically
         },
         body: formData,
     });
