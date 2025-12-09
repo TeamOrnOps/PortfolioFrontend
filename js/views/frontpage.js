@@ -1,9 +1,72 @@
 import { fetchAllProjects } from '../api.js';
 
-// Render single project card
+// Render hero image section
+function renderHeroImage(projects, selectedWorkType) {
+    // only show hero when specific workType is selected (not on "all")
+    if (!selectedWorkType) {
+        return '';
+    }
+
+    // Find first project with selected workType that has featured image
+    const projectWithHero = projects.find(project =>
+        project.workType === selectedWorkType &&
+        project.images?.some(img => img.isFeatured)
+    );
+
+    if (!projectWithHero) {
+        return '';
+    }
+
+    // Get the featured image
+    const heroImage = projectWithHero.images.find(img => img.isFeatured);
+
+    return `
+        <section class="hero-section">
+            <img src="${heroImage.url}" alt="${projectWithHero.title}" class="hero-image" />
+            <div class="hero-overlay">
+                <h2>${projectWithHero.workType}</h2>
+            </div>
+        </section>
+    `;
+}
+
+// Render workType filter buttons
+function renderWorkTypeFilters(selectedWorkType) {
+    // WorkType values from backend enum
+    const workTypes = [
+        { value: null, label: 'All Projects' },
+        { value: 'PAVING_CLEANING', label: 'Fliserens' },
+        { value: 'WOODEN_DECK_CLEANING', label: 'Rens af træterrasse' },
+        { value: 'ROOF_CLEANING', label: 'Tagrens' },
+        { value: 'FACADE_CLEANING', label: 'Facaderens' }
+    ];
+
+    const filtersHtml = workTypes.map(type => {
+        const isActive = selectedWorkType === type.value;
+        const activeClass = isActive ? 'filter-active' : '';
+
+        return `
+            <button 
+                class="filter-button ${activeClass}" 
+                onclick="window.filterByWorkType('${type.value || ''}')"
+            >
+                ${type.label}
+            </button>
+        `;
+    }).join('');
+
+    return `
+        <nav class="work-type-filters">
+            ${filtersHtml}
+        </nav>
+    `;
+}
+
+// Render single project card (grid view)
 function renderProjectCard(project) {
-    const featuredImage = project.images?.find(img => img.isFeatured) || project.images?.[0]; // fallback to first image if no featured
-    const imageUrl = featuredImage ? featuredImage.url : '/static/placeholder-image.jpg'; // placeholder image
+    // Get first non-featured image for card thumbnail
+    const thumbnailImage = project.images?.find(img => !img.isFeatured) || project.images?.[0];
+    const imageUrl = thumbnailImage ? thumbnailImage.url : '/static/placeholder-image.jpg';
 
     // Format date to DK format
     const executionDate = new Date(project.executionDate).toLocaleDateString('da-DK', {
@@ -12,7 +75,6 @@ function renderProjectCard(project) {
         day: 'numeric'
     });
 
-    // wrapped in an onclick for project details
     return `
         <article class="project-card" onclick="window.location.hash = '#/project/${project.id}'">
             <img src="${imageUrl}" alt="${project.title}" class="project-card-image" />
@@ -48,10 +110,11 @@ function renderEmptyState() {
 }
 
 // Main render function for front page
-export async function renderFrontPage() {
+export async function renderFrontPage(selectedWorkType = null) {
     try {
-        // Fetch all projects (sorted newest first by default)
-        const projects = await fetchAllProjects();
+        // Fetch all projects (or filtered by workType)
+        const filters = selectedWorkType ? { workType: selectedWorkType } : {};
+        const projects = await fetchAllProjects(filters);
 
         // Handle empty state
         if (!projects || projects.length === 0) {
@@ -61,6 +124,7 @@ export async function renderFrontPage() {
                         <h1>AlgeNord Portfolio</h1>
                         <p>Our projects are currently being cleaned and maintained!</p>
                     </header>
+                    ${renderWorkTypeFilters(selectedWorkType)}
                     ${renderEmptyState()}
                 </div>
             `;
@@ -75,6 +139,9 @@ export async function renderFrontPage() {
                     <h1>AlgeNord Portfolio</h1>
                     <p>Our projects are currently being cleaned and maintained!</p>
                 </header>
+                
+                ${renderWorkTypeFilters(selectedWorkType)}
+                ${renderHeroImage(projects, selectedWorkType)}
                 
                 <section class="projects-grid">
                     ${projectCards}
@@ -93,3 +160,14 @@ export async function renderFrontPage() {
         `;
     }
 }
+
+// Global function for filter buttons (attached to window for onclick handlers)
+window.filterByWorkType = function(workType) {
+    // Store selected filter and re-render
+    const selectedType = workType || null;
+
+    // Re-render frontpage with selected filter
+    renderFrontPage(selectedType).then(html => {
+        document.getElementById('main-content').innerHTML = html;
+    });
+};
