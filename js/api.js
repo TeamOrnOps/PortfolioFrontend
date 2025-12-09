@@ -1,4 +1,5 @@
 const API_BASE_URL = 'http://localhost:8080/api';
+const AUTH_BASE_URL = 'http://localhost:8080/auth';
 
 // Generic fetch handler with error handling
 async function apiFetch(url, options = {}) {
@@ -104,5 +105,13 @@ export async function updateImageMetadata(projectId, imageId, updateData) {
 export async function deleteImage(projectId, imageId) {
     return apiFetch(`${API_BASE_URL}/projects/${projectId}/images/${imageId}`, {
         method: 'DELETE',
+    });
+}
+
+// login user and get JWT token
+export async function login(credentials) {
+    return apiFetch(`${AUTH_BASE_URL}/login`, {
+        method: 'POST',
+        body: JSON.stringify(credentials),
     });
 }
