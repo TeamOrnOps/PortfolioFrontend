@@ -1,5 +1,6 @@
 import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
+import { renderCreateProjectView, initCreateProjectForm } from './views/formulas/createProject.js';
 
 // Routes config (maps hash routes to view render functions)
 const routes = {
@@ -7,6 +8,12 @@ const routes = {
     '/': renderFrontPage,
     '/projects': renderFrontPage,
     '/project/:id': renderPresentationView,
+    '/create': renderCreateProjectView,
+};
+
+// Post-render initialization functions for views that need it
+const postRenderInit = {
+    '/create': initCreateProjectForm,
 };
 
 // Get current route from URL hash
@@ -43,6 +50,7 @@ async function router() {
     const mainContent = document.getElementById('main-content');
 
     let matchedRoute = null;
+    let matchedRoutePath = null;
     let params = {};
 
     // Find first match to current hash, capture its params, stop
@@ -50,6 +58,7 @@ async function router() {
         const match = matchRoute(route, hash);
         if (match !== null) {
             matchedRoute = renderFunction;
+            matchedRoutePath = route;
             params = match;
             break;
         }
@@ -63,23 +72,29 @@ async function router() {
                 : await matchedRoute(params);
 
             mainContent.innerHTML = html;
+
+            // Run post-render initialization if exists for this route
+            if (postRenderInit[matchedRoutePath]) {
+                postRenderInit[matchedRoutePath]();
+            }
+
         } catch (error) {
             console.error('Error rendering view:', error);
             mainContent.innerHTML = `
-                <div style="padding: 2rem; text-align: center;">
-                    <h2>An error has occurred!</h2>
-                    <p>Couldn't load page. Please try again later</p>
-                    <button onclick="window.location.hash = '#/'">Back to front page</button>
+                <div class="error-state" style="padding: 2rem; text-align: center;">
+                    <h2>Der opstod en fejl!</h2>
+                    <p>Kunne ikke indlæse siden. Prøv igen senere.</p>
+                    <button onclick="window.location.hash = '#/'">Tilbage til forsiden</button>
                 </div>
             `;
         }
     } else {
         // 404 - Route not found
         mainContent.innerHTML = `
-            <div style="padding: 2rem; text-align: center;">
-                <h2>404 - Page not found</h2>
-                <p>This page does not exist.</p>
-                <button onclick="window.location.hash = '#/'">Back to front page</button>
+            <div class="error-state" style="padding: 2rem; text-align: center;">
+                <h2>404 - Siden blev ikke fundet</h2>
+                <p>Denne side eksisterer ikke.</p>
+                <button onclick="window.location.hash = '#/'">Tilbage til forsiden</button>
             </div>
         `;
     }
