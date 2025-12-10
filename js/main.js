@@ -12,6 +12,7 @@ import { renderCreateProjectView } from './views/formulas/createProject.js';
 // Public routes - accessible without authentication
 const publicRoutes = [
     '/login',
+    '/projects',
     '/project/:id',  // Presentation view for customers
 ];
 
@@ -19,7 +20,7 @@ const publicRoutes = [
 const routes = {
     '': renderFrontPage,
     '/': renderFrontPage,
-    '/projects': renderFrontPage,
+    '/projects': renderPresentationView,
     '/project/:id': renderPresentationView,
     '/login': renderLoginView,
     '/create-project': renderCreateProjectView,

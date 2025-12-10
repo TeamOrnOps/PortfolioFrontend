@@ -96,6 +96,27 @@ export async function fetchAllProjects(filters = {}) {
     return apiFetch(url, {}, true); // Requires auth (admin frontpage)
 }
 
+
+/**
+ * Fetch all projects for presentation view (no auth)
+ * @param filters
+ * @returns {Promise<null|any|undefined>}
+ */
+export async function fetchAllProjectsPublic(filters = {}) {
+    const params = new URLSearchParams();
+
+    if (filters.workType) params.append('workType', filters.workType);
+    if (filters.customerType) params.append('customerType', filters.customerType);
+    if (filters.sort) params.append('sort', filters.sort);
+
+    const queryString = params.toString();
+    const url = `${API_BASE_URL}/projects${queryString ? `?${queryString}` : ''}`;
+
+    // requiresAuth = false
+    return apiFetch(url, {}, false);
+}
+
+
 /**
  * Fetch single project by ID (public - for presentation view)
  * @param {number} id
