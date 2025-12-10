@@ -1,6 +1,7 @@
 import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
 import { renderCreateProjectView, initCreateProjectForm } from './views/formulas/createProject.js';
+import { renderLoginView } from './views/loginview.js';
 
 // Routes config (maps hash routes to view render functions)
 const routes = {
@@ -14,6 +15,7 @@ const routes = {
 // Post-render initialization functions for views that need it
 const postRenderInit = {
     '/create': initCreateProjectForm,
+    '/login': renderLoginView,
 };
 
 // Get current route from URL hash
