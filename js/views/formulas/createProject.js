@@ -25,18 +25,13 @@ function generateImageId() {
     return `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Format date for input[type="date"] (YYYY-MM-DD)
-function formatDateForInput(date) {
-    return date.toISOString().split('T')[0];
-}
-
-// Get today's date formatted for max attribute
+// Get today's date formatted for max attribute (YYYY-MM-DD)
 function getTodayFormatted() {
-    return formatDateForInput(new Date());
+    return new Date().toISOString().split('T')[0];
 }
 
 // Render the create project form
-export function renderCreateProjectForm() {
+function renderCreateProjectForm() {
     // Reset uploaded images when rendering new form
     uploadedImages = [];
 
@@ -146,10 +141,10 @@ export function renderCreateProjectForm() {
 
                     <!-- Image Preview Container -->
                     <div id="image-preview-container" class="image-preview-container">
-                        <!-- Uploaded images will be rendered here -->
+                        <p class="no-images-text">Ingen billeder tilføjet endnu</p>
                     </div>
 
-                    <div id="image-validation-summary" class="validation-summary hidden">
+                    <div id="image-validation-summary" class="validation-summary" style="display: none;">
                         <span class="before-count">Før-billeder: 0</span>
                         <span class="after-count">Efter-billeder: 0</span>
                     </div>
@@ -161,13 +156,12 @@ export function renderCreateProjectForm() {
                         Annuller
                     </button>
                     <button type="submit" class="btn btn-primary" id="submit-btn">
-                        <span class="btn-text">Opret projekt</span>
-                        <span class="btn-loading hidden">Opretter...</span>
+                        Opret projekt
                     </button>
                 </div>
 
                 <!-- Form Messages -->
-                <div id="form-message" class="form-message hidden"></div>
+                <div id="form-message" class="form-message" style="display: none;"></div>
             </form>
         </div>
     `;
@@ -218,7 +212,7 @@ function updateImagePreviews() {
 
     if (uploadedImages.length === 0) {
         container.innerHTML = '<p class="no-images-text">Ingen billeder tilføjet endnu</p>';
-        validationSummary.classList.add('hidden');
+        if (validationSummary) validationSummary.style.display = 'none';
         return;
     }
 
@@ -228,9 +222,11 @@ function updateImagePreviews() {
     const beforeCount = uploadedImages.filter(img => img.imageType === 'BEFORE').length;
     const afterCount = uploadedImages.filter(img => img.imageType === 'AFTER').length;
 
-    validationSummary.querySelector('.before-count').textContent = `Før-billeder: ${beforeCount}`;
-    validationSummary.querySelector('.after-count').textContent = `Efter-billeder: ${afterCount}`;
-    validationSummary.classList.remove('hidden');
+    if (validationSummary) {
+        validationSummary.querySelector('.before-count').textContent = `Før-billeder: ${beforeCount}`;
+        validationSummary.querySelector('.after-count').textContent = `Efter-billeder: ${afterCount}`;
+        validationSummary.style.display = 'block';
+    }
 
     // Add event listeners to new elements
     attachImageControlListeners();
@@ -252,6 +248,7 @@ function attachImageControlListeners() {
             const imageId = e.target.dataset.imageId;
             const imageType = e.target.value;
             updateImageMetadata(imageId, { imageType });
+            updateValidationSummary();
         });
     });
 
@@ -276,21 +273,33 @@ function attachImageControlListeners() {
     });
 }
 
+// Update validation summary counts
+function updateValidationSummary() {
+    const validationSummary = document.getElementById('image-validation-summary');
+    if (!validationSummary) return;
+
+    const beforeCount = uploadedImages.filter(img => img.imageType === 'BEFORE').length;
+    const afterCount = uploadedImages.filter(img => img.imageType === 'AFTER').length;
+
+    validationSummary.querySelector('.before-count').textContent = `Før-billeder: ${beforeCount}`;
+    validationSummary.querySelector('.after-count').textContent = `Efter-billeder: ${afterCount}`;
+}
+
 // Add new images to upload list
 function handleImageUpload(files) {
     const errorElement = document.getElementById('images-error');
-    errorElement.textContent = '';
+    if (errorElement) errorElement.textContent = '';
 
     for (const file of files) {
         // Validate file type
         if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-            errorElement.textContent = `Ugyldig filtype: ${file.name}. Accepterede formater: JPG, PNG, GIF, WebP`;
+            if (errorElement) errorElement.textContent = `Ugyldig filtype: ${file.name}. Accepterede formater: JPG, PNG, GIF, WebP`;
             continue;
         }
 
         // Validate file size (max 10MB)
         if (file.size > 10 * 1024 * 1024) {
-            errorElement.textContent = `Filen ${file.name} er for stor. Maksimal størrelse er 10MB`;
+            if (errorElement) errorElement.textContent = `Filen ${file.name} er for stor. Maksimal størrelse er 10MB`;
             continue;
         }
 
@@ -340,7 +349,8 @@ function validateForm() {
         .forEach(el => el.classList.remove('input-error'));
 
     // Title validation
-    const title = document.getElementById('project-title').value.trim();
+    const titleEl = document.getElementById('project-title');
+    const title = titleEl ? titleEl.value.trim() : '';
     if (!title) {
         errors.title = 'Projektnavn er påkrævet';
         isValid = false;
@@ -350,7 +360,8 @@ function validateForm() {
     }
 
     // Description validation
-    const description = document.getElementById('project-description').value.trim();
+    const descEl = document.getElementById('project-description');
+    const description = descEl ? descEl.value.trim() : '';
     if (!description) {
         errors.description = 'Beskrivelse er påkrævet';
         isValid = false;
@@ -360,21 +371,24 @@ function validateForm() {
     }
 
     // Work type validation
-    const workType = document.getElementById('work-type').value;
+    const workTypeEl = document.getElementById('work-type');
+    const workType = workTypeEl ? workTypeEl.value : '';
     if (!workType) {
         errors.workType = 'Vælg en servicekategori';
         isValid = false;
     }
 
     // Customer type validation
-    const customerType = document.getElementById('customer-type').value;
+    const customerTypeEl = document.getElementById('customer-type');
+    const customerType = customerTypeEl ? customerTypeEl.value : '';
     if (!customerType) {
         errors.customerType = 'Vælg en kundetype';
         isValid = false;
     }
 
     // Execution date validation
-    const executionDate = document.getElementById('execution-date').value;
+    const executionDateEl = document.getElementById('execution-date');
+    const executionDate = executionDateEl ? executionDateEl.value : '';
     if (!executionDate) {
         errors.executionDate = 'Udførelsesdato er påkrævet';
         isValid = false;
@@ -419,16 +433,6 @@ function validateForm() {
         if (errorElement) {
             errorElement.textContent = errors[field];
         }
-        const inputElement = document.getElementById(
-            field === 'title' ? 'project-title' :
-                field === 'description' ? 'project-description' :
-                    field === 'workType' ? 'work-type' :
-                        field === 'customerType' ? 'customer-type' :
-                            field === 'executionDate' ? 'execution-date' : ''
-        );
-        if (inputElement) {
-            inputElement.classList.add('input-error');
-        }
     });
 
     return isValid;
@@ -440,7 +444,7 @@ function showFormMessage(message, isError = false) {
     if (messageElement) {
         messageElement.textContent = message;
         messageElement.className = `form-message ${isError ? 'error' : 'success'}`;
-        messageElement.classList.remove('hidden');
+        messageElement.style.display = 'block';
 
         // Scroll to message
         messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -450,17 +454,14 @@ function showFormMessage(message, isError = false) {
 // Set loading state
 function setLoadingState(isLoading) {
     const submitBtn = document.getElementById('submit-btn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    const btnLoading = submitBtn.querySelector('.btn-loading');
+    if (!submitBtn) return;
 
     if (isLoading) {
         submitBtn.disabled = true;
-        btnText.classList.add('hidden');
-        btnLoading.classList.remove('hidden');
+        submitBtn.textContent = 'Opretter...';
     } else {
         submitBtn.disabled = false;
-        btnText.classList.remove('hidden');
-        btnLoading.classList.add('hidden');
+        submitBtn.textContent = 'Opret projekt';
     }
 }
 
@@ -479,16 +480,27 @@ function resetForm() {
     // Clear any error messages
     document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+    // Hide form message
+    const messageElement = document.getElementById('form-message');
+    if (messageElement) messageElement.style.display = 'none';
 }
 
 // Handle form submission
-export async function handleCreateProjectSubmit(event) {
+async function handleCreateProjectSubmit(event) {
     event.preventDefault();
+    console.log('Form submitted');
+
+    const form = event.target;
+    console.log('Form element:', form);
 
     // Validate form
     if (!validateForm()) {
+        console.log('Validation failed');
         return;
     }
+
+    console.log('Validation passed, submitting...');
 
     // Set loading state
     setLoadingState(true);
@@ -496,18 +508,22 @@ export async function handleCreateProjectSubmit(event) {
     try {
         // Build project data object
         const projectData = {
-            title: document.getElementById('project-title').value.trim(),
-            description: document.getElementById('project-description').value.trim(),
-            workType: document.getElementById('work-type').value,
-            customerType: document.getElementById('customer-type').value,
-            executionDate: document.getElementById('execution-date').value
+            title: form.title.value,
+            description: form.description.value,
+            serviceCategory: form.workType.value,  // <-- Ændret fra workType
+            customerType: form.customerType.value,
+            executionDate: form.executionDate.value
         };
+
+        console.log('Project data:', projectData);
 
         // Build image metadata array
         const imageMetadata = uploadedImages.map(img => ({
             imageType: img.imageType,
             isFeatured: img.isFeatured
         }));
+
+        console.log('Image metadata:', imageMetadata);
 
         // Create FormData for multipart request
         const formData = new FormData();
@@ -523,16 +539,20 @@ export async function handleCreateProjectSubmit(event) {
         // Add image metadata as JSON blob
         formData.append('imageMetadata', new Blob([JSON.stringify(imageMetadata)], { type: 'application/json' }));
 
+        console.log('Sending request...');
+
         // Send request
         const result = await createProject(formData);
+
+        console.log('Success:', result);
 
         // Success!
         showFormMessage('Projekt oprettet succesfuldt!', false);
         resetForm();
 
-        // Redirect to project view after short delay
+        // Redirect to frontpage after short delay
         setTimeout(() => {
-            window.location.hash = `#/project/${result.id}`;
+            window.location.hash = '#/';
         }, 1500);
 
     } catch (error) {
@@ -544,15 +564,21 @@ export async function handleCreateProjectSubmit(event) {
 }
 
 // Initialize form event listeners
-export function initCreateProjectForm() {
+function initCreateProjectForm() {
+    console.log('Initializing create project form...');
+
     const form = document.getElementById('create-project-form');
     const imageInput = document.getElementById('image-upload');
 
     if (form) {
+        console.log('Form found, attaching submit listener');
         form.addEventListener('submit', handleCreateProjectSubmit);
+    } else {
+        console.error('Form not found!');
     }
 
     if (imageInput) {
+        console.log('Image input found, attaching change listener');
         imageInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files.length > 0) {
                 handleImageUpload(e.target.files);
@@ -560,13 +586,19 @@ export function initCreateProjectForm() {
                 e.target.value = '';
             }
         });
+    } else {
+        console.error('Image input not found!');
     }
-
-    // Initial render of empty image previews
-    updateImagePreviews();
 }
 
 // Main render function for create project view
 export async function renderCreateProjectView() {
-    return renderCreateProjectForm();
+    const html = renderCreateProjectForm();
+
+    // Initialize form after DOM is updated
+    setTimeout(() => {
+        initCreateProjectForm();
+    }, 0);
+
+    return html;
 }
