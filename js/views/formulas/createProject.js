@@ -491,6 +491,9 @@ async function handleCreateProjectSubmit(event) {
     event.preventDefault();
     console.log('Form submitted');
 
+    const form = event.target;
+    console.log('Form element:', form);
+
     // Validate form
     if (!validateForm()) {
         console.log('Validation failed');
