@@ -3,7 +3,7 @@ import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
-import { renderEditProjectView } from './views/formulas/editProject.js';
+// import { renderEditProjectView } from './views/formulas/editProject.js';
 
 // ============================================
 // ROUTE CONFIGURATION
