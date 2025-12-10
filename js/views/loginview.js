@@ -1,6 +1,9 @@
 import { login } from '../api.js';
+import { isAuthenticated, setToken } from '../utils/auth.js';
 
-// Render login form
+/**
+ * Render login form HTML
+ */
 function renderLoginForm() {
     return `
         <div class="login-container">
@@ -37,12 +40,18 @@ function renderLoginForm() {
                     
                     <div id="login-error" class="login-error" style="display: none;"></div>
                 </form>
+                
+                <div class="login-footer">
+                    <a href="#/project/1" class="customer-link">View portfolio as customer →</a>
+                </div>
             </div>
         </div>
     `;
 }
 
-// Handle login form submission
+/**
+ * Handle login form submission
+ */
 async function handleLoginSubmit(event) {
     event.preventDefault();
 
@@ -64,19 +73,23 @@ async function handleLoginSubmit(event) {
         // Call login API
         const response = await login({ username, password });
 
-        // Store JWT token in localStorage
+        // Store JWT token using auth utility
         if (response.token) {
-            localStorage.setItem('jwt_token', response.token);
+            setToken(response.token);
 
-            // Redirect to main page
-            window.location.hash = '#/';
+            // Check if there's a redirect destination stored
+            const redirectTo = sessionStorage.getItem('redirectAfterLogin');
+            sessionStorage.removeItem('redirectAfterLogin');
+
+            // Redirect to intended destination or home
+            window.location.hash = redirectTo || '#/';
         } else {
             throw new Error('No token received from server');
         }
 
     } catch (error) {
         // Show error message
-        errorDiv.textContent = 'Invalid username or password. Please try again.';
+        errorDiv.textContent = error.message || 'Invalid username or password. Please try again.';
         errorDiv.style.display = 'block';
 
         // Re-enable button
@@ -89,14 +102,15 @@ async function handleLoginSubmit(event) {
     }
 }
 
-// Main render function for login view
+/**
+ * Main render function for login view
+ */
 export async function renderLoginView() {
     // Check if already logged in
-    const token = localStorage.getItem('jwt_token');
-    if (token) {
+    if (isAuthenticated()) {
         // User already logged in, redirect to home
         window.location.hash = '#/';
-        return '<div>Redirecting...</div>';
+        return '<div class="redirect-message">Redirecting...</div>';
     }
 
     // Render login form
