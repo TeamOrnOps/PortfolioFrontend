@@ -34,9 +34,9 @@ function renderHeroImage(projects, selectedWorkType) {
 function renderWorkTypeFilters(selectedWorkType) {
     // WorkType values from backend enum
     const workTypes = [
-        { value: null, label: 'All Projects' },
+        { value: null, label: 'Alle projekter' },
         { value: 'PAVING_CLEANING', label: 'Fliserens' },
-        { value: 'WOODEN_DECK_CLEANING', label: 'Rens af træterrasse' },
+        { value: 'WOODEN_DECK_CLEANING', label: 'Rens af trædæk' },
         { value: 'ROOF_CLEANING', label: 'Tagrens' },
         { value: 'FACADE_CLEANING', label: 'Facaderens' }
     ];
@@ -95,7 +95,7 @@ function renderProjectCard(project) {
 function renderLoading() {
     return `
         <div class="loading">
-            <p>Loading projects...</p>
+            <p>Indlæser projekter...</p>
         </div>
     `;
 }
@@ -104,7 +104,21 @@ function renderLoading() {
 function renderEmptyState() {
     return `
         <div class="empty-state">
-            <p>No projects found. Please check back later.</p>
+            <p>Ingen projekter fundet.</p>
+            <button class="btn btn-primary" onclick="window.location.hash = '#/create'">
+                Opret dit første projekt
+            </button>
+        </div>
+    `;
+}
+
+// Render admin actions (create button)
+function renderAdminActions() {
+    return `
+        <div class="admin-actions">
+            <button class="btn btn-primary create-project-btn" onclick="window.location.hash = '#/create'">
+                + Opret nyt projekt
+            </button>
         </div>
     `;
 }
@@ -122,8 +136,9 @@ export async function renderFrontPage(selectedWorkType = null) {
                 <div class="frontpage">
                     <header class="frontpage-header">
                         <h1>AlgeNord Portfolio</h1>
-                        <p>Our projects are currently being cleaned and maintained!</p>
+                        <p>Professionel rensning og vedligeholdelse af udendørs overflader</p>
                     </header>
+                    ${renderAdminActions()}
                     ${renderWorkTypeFilters(selectedWorkType)}
                     ${renderEmptyState()}
                 </div>
@@ -137,9 +152,10 @@ export async function renderFrontPage(selectedWorkType = null) {
             <div class="frontpage">
                 <header class="frontpage-header">
                     <h1>AlgeNord Portfolio</h1>
-                    <p>Our projects are currently being cleaned and maintained!</p>
+                    <p>Professionel rensning og vedligeholdelse af udendørs overflader</p>
                 </header>
                 
+                ${renderAdminActions()}
                 ${renderWorkTypeFilters(selectedWorkType)}
                 ${renderHeroImage(projects, selectedWorkType)}
                 
@@ -153,9 +169,9 @@ export async function renderFrontPage(selectedWorkType = null) {
         console.error('Error rendering front page:', error);
         return `
             <div class="error-state">
-                <h2>Error loading projects</h2>
-                <p>An error occurred loading this page. Please try reload.</p>
-                <button onclick="window.location.reload()">Reload</button>
+                <h2>Fejl ved indlæsning af projekter</h2>
+                <p>Der opstod en fejl ved indlæsning af siden. Prøv at genindlæse.</p>
+                <button onclick="window.location.reload()">Genindlæs</button>
             </div>
         `;
     }
