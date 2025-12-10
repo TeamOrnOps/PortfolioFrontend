@@ -2,6 +2,8 @@ import { isAuthenticated, logout } from './utils/auth.js';
 import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
 import { renderLoginView } from './views/loginview.js';
+import { renderCreateProjectView } from './views/formulas/createProject.js';
+import { renderEditProjectView } from './views/formulas/editProject.js';
 
 // ============================================
 // ROUTE CONFIGURATION
@@ -21,8 +23,8 @@ const routes = {
     '/project/:id': renderPresentationView,
     '/login': renderLoginView,
     '/create-project': renderCreateProjectView,
+    '/edit-project/:id': renderEditProjectView,
     // TODO: Add these routes when views are implemented
-    // '/edit-project/:id': renderEditProjectView,
     // '/admin/users': renderUserListView,
     // '/admin/users/create': renderCreateUserView,
     // '/admin/users/:id': renderUserDetailView,
