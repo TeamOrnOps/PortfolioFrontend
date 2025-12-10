@@ -1,6 +1,6 @@
 import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
-import { renderCreateProjectView, initCreateProjectForm } from './views/formulas/createProject.js';
+import { renderCreateProjectView, initCreateProjectForm } from '../../../Eksamensprojekt/PortofolioBackend/frontend/js/views/formulas/createProject.js';
 import { renderLoginView } from './views/loginview.js';
 
 // Routes config (maps hash routes to view render functions)
