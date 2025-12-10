@@ -123,7 +123,10 @@ export async function renderFrontPage(selectedWorkType = null) {
                     <header class="frontpage-header">
                         <h1>AlgeNord Portfolio</h1>
                         <p>Our projects are currently being cleaned and maintained!</p>
-                        <a href="#/create-project" class="btn btn-primary">+ Opret nyt projekt</a>
+                        <div class="admin-actions">
+                            <a href="#/create-project" class="btn btn-primary">+ Create new Project</a>
+                            <a href="#/admin/users" class="btn btn-secondary">User Management</a>
+                        </div>
                     </header>
                     ${renderWorkTypeFilters(selectedWorkType)}
                     ${renderEmptyState()}
@@ -139,7 +142,10 @@ export async function renderFrontPage(selectedWorkType = null) {
                 <header class="frontpage-header">
                     <h1>AlgeNord Portfolio</h1>
                     <p>Our projects are currently being cleaned and maintained!</p>
-                    <a href="#/create-project" class="btn btn-primary">+ Opret nyt projekt</a>
+                    <div class="admin-actions">
+                        <a href="#/create-project" class="btn btn-primary">+ Create new Project</a>
+                        <a href="#/admin/users" class="btn btn-secondary">User Management</a>
+                    </div>
                 </header>
                 
                 ${renderWorkTypeFilters(selectedWorkType)}
