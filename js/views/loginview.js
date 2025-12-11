@@ -42,7 +42,7 @@ function renderLoginForm() {
                 </form>
                 
                 <div class="login-footer">
-                    <a href="#/project/1" class="customer-link">View portfolio as customer →</a>
+                    <a href="#/projects" class="customer-link">View portfolio as customer →</a>
                 </div>
             </div>
         </div>
