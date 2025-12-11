@@ -62,7 +62,7 @@ function renderWorkTypeFilters(selectedWorkType) {
     `;
 }
 
-// Render list of projects
+// RENDER LIST OF PROJECT CARDS
 function renderProjectCard(project) {
 
     // Find BEFORE and AFTER images (du garanterer de findes)
@@ -88,16 +88,33 @@ function renderProjectCard(project) {
             
             <!-- LEFT SIDE -->
             <div class="project-row-images">
-                <div class="project-image-block">
-                    <h4>Før</h4>
-                    <img src="${beforeUrl}" class="project-image" alt="Før - ${project.title}">
-                </div>
 
-                <div class="project-image-block">
-                    <h4>Efter</h4>
-                    <img src="${afterUrl}" class="project-image" alt="Efter - ${project.title}">
-                </div>
-            </div>
+    <div class="project-image-block">
+        <h4>Før</h4>
+        <img src="${beforeUrl}" class="project-image" alt="Før billede">
+
+        ${beforeImage ? `
+            <button class="btn btn-small"
+                    onclick="window.location.hash = '#/edit-image/${project.id}/${beforeImage.id}'">
+                Rediger før-billede
+            </button>
+        ` : ''}
+    </div>
+
+    <div class="project-image-block">
+        <h4>Efter</h4>
+        <img src="${afterUrl}" class="project-image" alt="Efter billede">
+
+        ${afterImage ? `
+            <button class="btn btn-small"
+                    onclick="window.location.hash = '#/edit-image/${project.id}/${afterImage.id}'">
+                Rediger efter-billede
+            </button>
+        ` : ''}
+    </div>
+
+</div>
+         
 
             <!-- RIGHT SIDE -->
             <div class="project-row-info">

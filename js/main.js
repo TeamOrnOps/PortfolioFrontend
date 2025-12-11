@@ -8,6 +8,8 @@ import { renderUserListView } from './views/admin/userlist.js';
 import { renderCreateUserView } from './views/admin/createuser.js';
 import { renderUserDetailView } from './views/admin/userdetail.js';
 import { renderEditUserView } from './views/admin/edituser.js';
+import { renderEditImageView } from './views/formulas/editImage.js';
+
 
 // ============================================
 // ROUTE CONFIGURATION
@@ -33,6 +35,7 @@ const routes = {
     '/admin/users/create': renderCreateUserView,
     '/admin/users/:id': renderUserDetailView,
     '/admin/users/:id/edit': renderEditUserView,
+    '/edit-image/:projectId/:imageId': renderEditImageView,
 };
 
 // ============================================
@@ -154,12 +157,18 @@ async function router() {
 
             mainContent.innerHTML = html;
 
-            // 🔥 IMPORTANT: Run init AFTER HTML is in DOM
+            // Initialize any forms or dynamic components after render
             if (matchedRoute === renderEditProjectView) {
                 import('./views/formulas/editProject.js').then(module => {
                     module.initEditProjectForm(params.id);
                 });
             }
+            if (matchedRoute === renderEditImageView) {
+                import('./views/formulas/editImage.js').then(module => {
+                    module.initEditImageForm(params.projectId, params.imageId);
+                });
+            }
+
 
 
             // Update navigation state after render
