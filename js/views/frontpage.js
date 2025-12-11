@@ -102,36 +102,24 @@ function renderProjectCard(project) {
 
     return `
         <article class="project-row">
-        
-            
-            <!-- LEFT SIDE -->
+            <!-- LEFT SIDE: Before/After Slider -->
             <div class="project-row-images">
-
-    <div class="project-image-block">
-        <h4>Før</h4>
-        <img src="${beforeUrl}" class="project-image" alt="Før billede">
-
-        ${beforeImage ? `
-            <button class="btn btn-small"
-                    onclick="window.location.hash = '#/edit-image/${project.id}/${beforeImage.id}'">
-                Rediger før-billede
-            </button>
-        ` : ''}
-    </div>
-
-    <div class="project-image-block">
-        <h4>Efter</h4>
-        <img src="${afterUrl}" class="project-image" alt="Efter billede">
-
-        ${afterImage ? `
-            <button class="btn btn-small"
-                    onclick="window.location.hash = '#/edit-image/${project.id}/${afterImage.id}'">
-                Rediger efter-billede
-            </button>
-        ` : ''}
-    </div>
-
-</div>
+                <img-comparison-slider class="comparison-slider">
+                    <img slot="first" src="${beforeUrl}" alt="Before" />
+                    <img slot="second" src="${afterUrl}" alt="After" />
+                    <div slot="handle" class="slider-handle">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M15 20l5-5v3h10v-3l5 5-5 5v-3H20v3l-5-5z" fill="#333"/>
+                        </svg>
+                    </div>
+                </img-comparison-slider>
+                
+                <div class="image-labels">
+                    <span class="label-before">Før</span>
+                    <span class="label-after">Efter</span>
+                </div>
+            </div>
          
 
             <!-- RIGHT SIDE -->
