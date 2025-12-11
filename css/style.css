@@ -1,5 +1,7 @@
+@import url('https://unpkg.com/img-comparison-slider@8/dist/styles.css');
 @import url('./create-project.css');
 @import url('./admin.css');
+@import url('./image-slider.css');
 
 /* CSS Custom Properties (Variables) */
 :root {
