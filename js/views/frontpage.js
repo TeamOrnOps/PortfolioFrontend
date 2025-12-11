@@ -1,4 +1,4 @@
-import {fetchAllProjects} from '../api.js';
+import {fetchAllProjects, deleteProject} from '../api.js';
 
 // Render hero image section
 function renderHeroImage(projects, selectedWorkType) {
@@ -140,11 +140,17 @@ function renderProjectCard(project) {
                 <p><strong>Kundetype:</strong> ${project.customerType}</p>
                 <p>${project.description}</p>
                 <p><strong>Udført:</strong> ${executionDate}</p>
-
-                <button class="btn btn-secondary"
-                        onclick="window.location.hash = '#/edit-project/${project.id}'">
-                    Rediger projekt
-                </button>
+            
+                <div class="project-actions">
+                    <button class="btn btn-secondary"
+                            onclick="window.location.hash = '#/edit-project/${project.id}'">
+                        Edit project
+                    </button>
+                    <button class="btn btn-danger"
+                            onclick="window.confirmDeleteProject(${project.id}, '${project.title}')">
+                        Delete project
+                    </button>
+                </div>
             </div>
         </article>
     `;
@@ -262,3 +268,32 @@ window.applyFilters = function (workType, customerType, sortOrder) {
         document.getElementById('main-content').innerHTML = html;
     });
 };
+
+// Global function to confirm project deletion
+window .confirmDeleteProject = async function (projectId, projectTitle) {
+    // Show confirm dialog
+    const confirmed = window.confirm(`Are you sure you want to delete the project "${projectTitle}"? This action cannot be undone.`);
+    if (!confirmed) return;
+
+    try {
+        const mainContent = document.getElementById('main-content');
+        mainContent.innerHTML = '<div class="loading"><p>Deleting project...</p></div>';
+
+        // delete project
+        await deleteProject(projectId);
+
+        // show success message
+        alert(`Project "${projectTitle}" has been deleted.`);
+
+        // reload frontpage
+        const html = await renderFrontPage();
+        mainContent.innerHTML = html;
+    } catch (error) {
+        console.error('Error deleting project:', error);
+        alert(`Error deleting project: ${error.message}`);
+
+        // reload frontpage
+        const html = await renderFrontPage();
+        document.getElementById('main-content').innerHTML = html;
+    }
+}
