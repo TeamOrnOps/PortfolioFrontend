@@ -64,7 +64,8 @@ async function handleDeleteUser(userId, username) {
 }
 
 // main render function for user detail view
-export async function renderUserDetailView(userId) {
+export async function renderUserDetailView(params) {
+    const userId = params?.id;
     try {
         const user = await fetchUserById(userId);
         return renderUserDetail(user);
