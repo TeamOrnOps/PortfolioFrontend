@@ -133,12 +133,16 @@ function validateForm() {
     }
 
     // display errors
-    for (const field in errors) {
+    Object.keys(errors).forEach(field => {
         const errorSpan = document.getElementById(`${field}-error`);
+        if (errorSpan) {
+            errorSpan.textContent = errors[field];
+        }
         const inputField = document.getElementById(field);
-        if (errorSpan) errorSpan.textContent = errors[field];
-        if (inputField) inputField.classList.add('input-error');
-    }
+        if (inputField) {
+            inputField.classList.add('input-error');
+        }
+    });
 
     return isValid;
 }
