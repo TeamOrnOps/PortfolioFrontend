@@ -4,6 +4,10 @@ import { renderPresentationView } from './views/presentationview.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
 // import { renderEditProjectView } from './views/formulas/editProject.js';
+import { renderUserListView } from './views/admin/userlist.js';
+import { renderCreateUserView } from './views/admin/createuser.js';
+import { renderUserDetailView } from './views/admin/userdetail.js';
+import { renderEditUserView } from './views/admin/edituser.js';
 
 // ============================================
 // ROUTE CONFIGURATION
@@ -25,11 +29,10 @@ const routes = {
     '/login': renderLoginView,
     '/create-project': renderCreateProjectView,
     // '/edit-project/:id': renderEditProjectView,
-    // TODO: Add these routes when views are implemented
-    // '/admin/users': renderUserListView,
-    // '/admin/users/create': renderCreateUserView,
-    // '/admin/users/:id': renderUserDetailView,
-    // '/admin/users/:id/edit': renderEditUserView,
+    '/admin/users': renderUserListView,
+    '/admin/users/create': renderCreateUserView,
+    '/admin/users/:id': renderUserDetailView,
+    '/admin/users/:id/edit': renderEditUserView,
 };
 
 // ============================================

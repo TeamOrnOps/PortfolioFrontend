@@ -1,0 +1,299 @@
+/* ==============================================
+   ADMIN USER MANAGEMENT STYLES
+   Uses CSS variables from base.css
+   ============================================== */
+
+/* Admin Container */
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-md);
+}
+
+/* Admin Header */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.admin-header-content h1 {
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--color-text);
+}
+
+.admin-subtitle {
+    margin: 0;
+    color: var(--color-text-light);
+    font-size: var(--font-size-sm);
+}
+
+.admin-header-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* User Table Section */
+.user-table-section {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+}
+
+/* User Table */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-table thead {
+    background: var(--color-bg-secondary);
+}
+
+.user-table th {
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.user-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.user-table tbody tr:hover {
+    background: var(--color-bg-secondary);
+    transition: background-color var(--transition-fast);
+}
+
+.user-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Table Cells */
+.user-id {
+    width: 80px;
+    color: var(--color-text-light);
+    font-family: 'Courier New', monospace;
+}
+
+.user-username {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.user-email {
+    color: var(--color-text-light);
+}
+
+.user-actions {
+    width: 240px;
+    text-align: right;
+}
+
+.user-actions .btn {
+    margin-left: var(--spacing-sm);
+}
+
+/* User Form */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.field-hint {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+/* User Detail Section */
+.user-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.detail-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.detail-card h2 {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-sm);
+}
+
+/* Detail List */
+.detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin: 0;
+}
+
+.detail-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item dt {
+    font-weight: 600;
+    color: var(--color-text-light);
+}
+
+.detail-item dd {
+    margin: 0;
+    color: var(--color-text);
+}
+
+/* Role Badge */
+.role-badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+/* Detail Actions */
+.detail-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-start;
+}
+
+/* Button Styles */
+.btn-small {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+}
+
+.btn-view {
+    background: var(--color-secondary);
+    color: white;
+}
+
+.btn-view:hover:not(:disabled) {
+    background: #475569;
+}
+
+.btn-edit {
+    background: var(--color-warning);
+    color: white;
+}
+
+.btn-edit:hover:not(:disabled) {
+    background: #d97706;
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #dc2626;
+}
+
+/* User Subtitle */
+.user-subtitle {
+    margin: 0;
+    color: var(--color-text-light);
+    font-size: var(--font-size-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .admin-header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .admin-header-actions .btn {
+        width: 100%;
+    }
+
+    .user-table {
+        font-size: var(--font-size-sm);
+    }
+
+    .user-table th,
+    .user-table td {
+        padding: var(--spacing-sm);
+    }
+
+    .user-actions {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .user-actions .btn {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .detail-item {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
+    }
+
+    .detail-item dt {
+        font-size: var(--font-size-sm);
+    }
+
+    .detail-actions {
+        flex-direction: column;
+    }
+
+    .detail-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        padding: var(--spacing-md);
+    }
+
+    /* Hide ID column on mobile */
+    .user-table .user-id {
+        display: none;
+    }
+
+    .user-table thead th:first-child {
+        display: none;
+    }
+}
