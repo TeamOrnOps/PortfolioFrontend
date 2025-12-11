@@ -3,7 +3,7 @@ import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
-// import { renderEditProjectView } from './views/formulas/editProject.js';
+import { renderEditProjectView } from './views/formulas/editProject.js';
 import { renderUserListView } from './views/admin/userlist.js';
 import { renderCreateUserView } from './views/admin/createuser.js';
 import { renderUserDetailView } from './views/admin/userdetail.js';
@@ -28,7 +28,7 @@ const routes = {
     '/project/:id': renderPresentationView,
     '/login': renderLoginView,
     '/create-project': renderCreateProjectView,
-    // '/edit-project/:id': renderEditProjectView,
+    '/edit-project/:id': renderEditProjectView,
     '/admin/users': renderUserListView,
     '/admin/users/create': renderCreateUserView,
     '/admin/users/:id': renderUserDetailView,
@@ -154,8 +154,17 @@ async function router() {
 
             mainContent.innerHTML = html;
 
+            // 🔥 IMPORTANT: Run init AFTER HTML is in DOM
+            if (matchedRoute === renderEditProjectView) {
+                import('./views/formulas/editProject.js').then(module => {
+                    module.initEditProjectForm(params.id);
+                });
+            }
+
+
             // Update navigation state after render
             updateNavigationUI();
+
         } catch (error) {
             console.error('Error rendering view:', error);
             mainContent.innerHTML = `
