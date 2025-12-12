@@ -62,13 +62,20 @@ function renderWorkTypeFilters(selectedWorkType) {
     `;
 }
 
-// Render single project card (grid view)
+// RENDER LIST OF PROJECT CARDS
 function renderProjectCard(project) {
-    // Get first non-featured image for card thumbnail
-    const thumbnailImage = project.images?.find(img => !img.isFeatured) || project.images?.[0];
-    const imageUrl = thumbnailImage ? thumbnailImage.url : '/static/placeholder-image.jpg';
 
-    // Format date to DK format
+    // Find BEFORE and AFTER images (du garanterer de findes)
+    const beforeImage = project.images.find(img => img.imageType === 'BEFORE');
+    const afterImage  = project.images.find(img => img.imageType === 'AFTER');
+
+    const beforeUrl = beforeImage ? `http://localhost:8080${beforeImage.url}` : '/static/placeholder-image.jpg';
+    const afterUrl = afterImage ? `http://localhost:8080${afterImage.url}` : '/static/placeholder-image.jpg';
+
+
+
+
+    // Format date
     const executionDate = new Date(project.executionDate).toLocaleDateString('da-DK', {
         year: 'numeric',
         month: 'long',
@@ -76,20 +83,55 @@ function renderProjectCard(project) {
     });
 
     return `
-        <article class="project-card" onclick="window.location.hash = '#/project/${project.id}'">
-            <img src="${imageUrl}" alt="${project.title}" class="project-card-image" />
-            <div class="project-card-content">
+        <article class="project-row">
+        
+            
+            <!-- LEFT SIDE -->
+            <div class="project-row-images">
+
+    <div class="project-image-block">
+        <h4>Før</h4>
+        <img src="${beforeUrl}" class="project-image" alt="Før billede">
+
+        ${beforeImage ? `
+            <button class="btn btn-small"
+                    onclick="window.location.hash = '#/edit-image/${project.id}/${beforeImage.id}'">
+                Rediger før-billede
+            </button>
+        ` : ''}
+    </div>
+
+    <div class="project-image-block">
+        <h4>Efter</h4>
+        <img src="${afterUrl}" class="project-image" alt="Efter billede">
+
+        ${afterImage ? `
+            <button class="btn btn-small"
+                    onclick="window.location.hash = '#/edit-image/${project.id}/${afterImage.id}'">
+                Rediger efter-billede
+            </button>
+        ` : ''}
+    </div>
+
+</div>
+         
+
+            <!-- RIGHT SIDE -->
+            <div class="project-row-info">
                 <h3>${project.title}</h3>
-                <p class="project-meta">
-                    <span>${project.workType}</span> • 
-                    <span>${project.customerType}</span>
-                </p>
-                <p class="project-description">${project.description.substring(0, 150)}${project.description.length > 150 ? '...' : ''}</p>
-                <p class="project-date">${executionDate}</p>
+                <p><strong>Kundetype:</strong> ${project.customerType}</p>
+                <p>${project.description}</p>
+                <p><strong>Udført:</strong> ${executionDate}</p>
+
+                <button class="btn btn-secondary"
+                        onclick="window.location.hash = '#/edit-project/${project.id}'">
+                    Rediger projekt
+                </button>
             </div>
         </article>
     `;
 }
+
 
 // Render loading state
 function renderLoading() {
