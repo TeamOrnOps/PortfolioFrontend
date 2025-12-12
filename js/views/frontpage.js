@@ -1,4 +1,4 @@
-import { fetchAllProjects } from '../api.js';
+import {fetchAllProjects} from '../api.js';
 
 // Render hero image section
 function renderHeroImage(projects, selectedWorkType) {
@@ -8,10 +8,7 @@ function renderHeroImage(projects, selectedWorkType) {
     }
 
     // Find first project with selected workType that has featured image
-    const projectWithHero = projects.find(project =>
-        project.workType === selectedWorkType &&
-        project.images?.some(img => img.isFeatured)
-    );
+    const projectWithHero = projects.find(project => project.workType === selectedWorkType && project.images?.some(img => img.isFeatured));
 
     if (!projectWithHero) {
         return '';
@@ -31,15 +28,15 @@ function renderHeroImage(projects, selectedWorkType) {
 }
 
 // Render workType filter buttons
-function renderWorkTypeFilters(selectedWorkType) {
+function renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder) {
     // WorkType values from backend enum
-    const workTypes = [
-        { value: null, label: 'All Projects' },
-        { value: 'PAVING_CLEANING', label: 'Fliserens' },
-        { value: 'WOODEN_DECK_CLEANING', label: 'Rens af træterrasse' },
-        { value: 'ROOF_CLEANING', label: 'Tagrens' },
-        { value: 'FACADE_CLEANING', label: 'Facaderens' }
-    ];
+    const workTypes = [{value: null, label: 'All Projects'}, {
+        value: 'PAVING_CLEANING',
+        label: 'Fliserens'
+    }, {value: 'WOODEN_DECK_CLEANING', label: 'Rens af træterrasse'}, {
+        value: 'ROOF_CLEANING',
+        label: 'Tagrens'
+    }, {value: 'FACADE_CLEANING', label: 'Facaderens'}];
 
     const filtersHtml = workTypes.map(type => {
         const isActive = selectedWorkType === type.value;
@@ -48,7 +45,7 @@ function renderWorkTypeFilters(selectedWorkType) {
         return `
             <button 
                 class="filter-button ${activeClass}" 
-                onclick="window.filterByWorkType('${type.value || ''}')"
+                onclick="window.applyFilters('${type.value || ''}', '${selectedCustomerType || ''}', '${sortOrder || ''}')"
             >
                 ${type.label}
             </button>
@@ -58,7 +55,33 @@ function renderWorkTypeFilters(selectedWorkType) {
     return `
         <nav class="work-type-filters">
             ${filtersHtml}
-        </nav>
+        <div class="additional-filters">
+            <div class="filter-group">
+                <label for="customer-type-filter">Customer Type:</label>
+                <select 
+                    id="customer-type-filter" 
+                    class="filter-dropdown"
+                    onchange="window.applyFilters('${selectedWorkType || ''}', this.value, '${sortOrder || ''}')"
+                >
+                    <option value="">All Customers</option>
+                    <option value="PRIVATE_CUSTOMER" ${selectedCustomerType === 'PRIVATE_CUSTOMER' ? 'selected' : ''}>Private Customer</option>
+                    <option value="BUSINESS_CUSTOMER" ${selectedCustomerType === 'BUSINESS_CUSTOMER' ? 'selected' : ''}>Business Customer</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sort-filter">Sort By:</label>
+                <select 
+                    id="sort-filter" 
+                    class="filter-dropdown"
+                    onchange="window.applyFilters('${selectedWorkType || ''}', '${selectedCustomerType || ''}', this.value)"
+                >
+                    <option value="">Default</option>
+                    <option value="executionDate,desc" ${sortOrder === 'executionDate,desc' ? 'selected' : ''}>Newest First</option>
+                    <option value="executionDate,asc" ${sortOrder === 'executionDate,asc' ? 'selected' : ''}>Oldest First</option>
+                </select>
+            </div>
+        </div>
     `;
 }
 
@@ -67,19 +90,15 @@ function renderProjectCard(project) {
 
     // Find BEFORE and AFTER images (du garanterer de findes)
     const beforeImage = project.images.find(img => img.imageType === 'BEFORE');
-    const afterImage  = project.images.find(img => img.imageType === 'AFTER');
+    const afterImage = project.images.find(img => img.imageType === 'AFTER');
 
     const beforeUrl = beforeImage ? `http://localhost:8080${beforeImage.url}` : '/static/placeholder-image.jpg';
     const afterUrl = afterImage ? `http://localhost:8080${afterImage.url}` : '/static/placeholder-image.jpg';
 
 
-
-
     // Format date
     const executionDate = new Date(project.executionDate).toLocaleDateString('da-DK', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+        year: 'numeric', month: 'long', day: 'numeric'
     });
 
     return `
@@ -152,28 +171,32 @@ function renderEmptyState() {
 }
 
 // Main render function for front page
-export async function renderFrontPage(selectedWorkType = null) {
+export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = null) {
     try {
-        // Fetch all projects (or filtered by workType)
-        const filters = selectedWorkType ? { workType: selectedWorkType } : {};
+        // Fetch all projects (with optional filters)
+        const filters = {};
+        if (selectedWorkType) filters.workType = selectedWorkType;
+        if (selectedCustomerType) filters.customerType = selectedCustomerType;
+        if (sortOrder) filters.sort = sortOrder;
+
         const projects = await fetchAllProjects(filters);
 
         // Handle empty state
         if (!projects || projects.length === 0) {
             return `
-                <div class="frontpage">
-                    <header class="frontpage-header">
-                        <h1>AlgeNord Portfolio</h1>
-                        <p>Our projects are currently being cleaned and maintained!</p>
-                        <div class="admin-actions">
-                            <a href="#/create-project" class="btn btn-primary">+ Create new Project</a>
-                            <a href="#/admin/users" class="btn btn-secondary">User Management</a>
-                        </div>
-                    </header>
-                    ${renderWorkTypeFilters(selectedWorkType)}
-                    ${renderEmptyState()}
-                </div>
-            `;
+            <div class="frontpage">
+                <header class="frontpage-header">
+                    <h1>AlgeNord Portfolio</h1>
+                    <p>Our projects are currently being cleaned and maintained!</p>
+                    <div class="admin-actions">
+                        <a href="#/create-project" class="btn btn-primary">+ Create new Project</a>
+                        <a href="#/admin/users" class="btn btn-secondary">User Management</a>
+                    </div>
+                </header>
+                ${renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder)}
+                ${renderEmptyState()}
+            </div>
+        `;
         }
 
         // Render project grid
@@ -190,7 +213,7 @@ export async function renderFrontPage(selectedWorkType = null) {
                     </div>
                 </header>
                 
-                ${renderWorkTypeFilters(selectedWorkType)}
+                ${renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder)}
                 ${renderHeroImage(projects, selectedWorkType)}
                 
                 <section class="projects-grid">
@@ -212,12 +235,14 @@ export async function renderFrontPage(selectedWorkType = null) {
 }
 
 // Global function for filter buttons (attached to window for onclick handlers)
-window.filterByWorkType = function(workType) {
+window.applyFilters = function (workType, customerType, sortOrder) {
     // Store selected filter and re-render
-    const selectedType = workType || null;
+    const selectedWorkType = workType || null;
+    const selectedCustomerType = customerType || null;
+    const selectedSort = sortOrder || null;
 
     // Re-render frontpage with selected filter
-    renderFrontPage(selectedType).then(html => {
+    renderFrontPage(selectedWorkType, selectedCustomerType, selectedSort).then(html => {
         document.getElementById('main-content').innerHTML = html;
     });
 };
