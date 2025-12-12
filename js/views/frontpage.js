@@ -19,7 +19,7 @@ function renderHeroImage(projects, selectedWorkType) {
 
     return `
         <section class="hero-section">
-            <img src="${heroImage.url}" alt="${projectWithHero.title}" class="hero-image" />
+            <img src="http://localhost:8080${heroImage.url}" alt="${projectWithHero.title}" class="hero-image" />
             <div class="hero-overlay">
                 <h2>${projectWithHero.workType}</h2>
             </div>
