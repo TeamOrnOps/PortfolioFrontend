@@ -76,7 +76,6 @@ function renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder
                     class="filter-dropdown"
                     onchange="window.applyFilters('${selectedWorkType || ''}', '${selectedCustomerType || ''}', this.value)"
                 >
-                    <option value="">Default</option>
                     <option value="executionDate,desc" ${sortOrder === 'executionDate,desc' ? 'selected' : ''}>Newest First</option>
                     <option value="executionDate,asc" ${sortOrder === 'executionDate,asc' ? 'selected' : ''}>Oldest First</option>
                 </select>
@@ -171,7 +170,13 @@ function renderEmptyState() {
 }
 
 // Main render function for front page
-export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = null) {
+export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = 'executionDate,desc') {
+    // load saved filters from localStorage
+    const savedFilters = JSON.parse(localStorage.getItem('projectFilters') || '{}');
+    selectedWorkType = selectedWorkType || savedFilters.workType || null;
+    selectedCustomerType = selectedCustomerType || savedFilters.customerType || null;
+    sortOrder = sortOrder || savedFilters.sortOrder || 'executionDate,desc';
+
     try {
         // Fetch all projects (with optional filters)
         const filters = {};
@@ -239,7 +244,18 @@ window.applyFilters = function (workType, customerType, sortOrder) {
     // Store selected filter and re-render
     const selectedWorkType = workType || null;
     const selectedCustomerType = customerType || null;
-    const selectedSort = sortOrder || null;
+    const selectedSort = sortOrder || 'executionDate,desc';
+
+    //save to localstorage
+    localStorage.setItem('projectFilters', JSON.stringify({
+        workType: selectedWorkType,
+        customerType: selectedCustomerType,
+        sortOrder: selectedSort
+    }));
+
+    // Show loading state
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = '<div class="loading"><p>Loading projects...</p></div>';
 
     // Re-render frontpage with selected filter
     renderFrontPage(selectedWorkType, selectedCustomerType, selectedSort).then(html => {
