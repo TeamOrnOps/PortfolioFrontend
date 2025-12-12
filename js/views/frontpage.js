@@ -76,8 +76,8 @@ function renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder
                     class="filter-dropdown"
                     onchange="window.applyFilters('${selectedWorkType || ''}', '${selectedCustomerType || ''}', this.value)"
                 >
-                    <option value="executionDate,desc" ${sortOrder === 'executionDate,desc' ? 'selected' : ''}>Newest First</option>
-                    <option value="executionDate,asc" ${sortOrder === 'executionDate,asc' ? 'selected' : ''}>Oldest First</option>
+                    <option value="desc" ${sortOrder === 'desc' ? 'selected' : ''}>Newest First</option>
+                    <option value="asc" ${sortOrder === 'asc' ? 'selected' : ''}>Oldest First</option>
                 </select>
             </div>
         </div>
@@ -176,12 +176,12 @@ function renderEmptyState() {
 }
 
 // Main render function for front page
-export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = 'executionDate,desc') {
+export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = 'desc') {
     // load saved filters from localStorage
     const savedFilters = JSON.parse(localStorage.getItem('projectFilters') || '{}');
     selectedWorkType = selectedWorkType || savedFilters.workType || null;
     selectedCustomerType = selectedCustomerType || savedFilters.customerType || null;
-    sortOrder = sortOrder || savedFilters.sortOrder || 'executionDate,desc';
+    sortOrder = sortOrder || savedFilters.sortOrder || 'desc';
 
     try {
         // Fetch all projects (with optional filters)
