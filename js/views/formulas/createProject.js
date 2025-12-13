@@ -378,9 +378,6 @@ function validateForm() {
     if (!description) {
         errors.description = 'Beskrivelse er påkrævet';
         isValid = false;
-    } else if (description.length < 10) {
-        errors.description = 'Beskrivelse skal være mindst 10 tegn';
-        isValid = false;
     }
 
     // Work type validation
