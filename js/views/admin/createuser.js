@@ -10,19 +10,19 @@ function renderCreateUserForm() {
     return `
         <div class="admin-container">
             <nav class="breadcrumb">               
-                <a href="#/admin/users">← Back to list</a>
+                <a href="#/admin/users">← Tilbage til Brugeradministration</a>
             </nav>
 
             <header class="page-header">
-                <h1>Create new user</h1>
+                <h1>Opret ny bruger</h1>
             </header>
 
             <form id="create-user-form" class="user-form" novalidate>
                 <section class="form-section">
-                    <h2>User Information</h2>
+                    <h2>Bruger oplysninger</h2>
 
                     <div class="form-group">
-                        <label for="username">Username *</label>
+                        <label for="username">Brugernavn *</label>
                         <input 
                             type="text" 
                             id="username" 
@@ -30,7 +30,7 @@ function renderCreateUserForm() {
                             required
                             minlength="${USERNAME_MIN_LENGTH}"
                             maxlength="${USERNAME_MAX_LENGTH}"
-                            placeholder="Write a username"
+                            placeholder="Skriv et brugernavn"
                         />
                         <span class="error-message" id="username-error"></span>
                     </div>
@@ -42,33 +42,33 @@ function renderCreateUserForm() {
                             id="email" 
                             name="email" 
                             required
-                            placeholder="user@algenord.dk"
+                            placeholder="bruger@algenord.dk"
                         />
                         <span class="error-message" id="email-error"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password *</label>
+                        <label for="password">Kodeord *</label>
                         <input 
                             type="password" 
                             id="password" 
                             name="password" 
                             required
                             minlength="${PASSWORD_MIN_LENGTH}"
-                            placeholder="At least ${PASSWORD_MIN_LENGTH} characters"
+                            placeholder="Skal være mindst ${PASSWORD_MIN_LENGTH} tegn"
                         />
                         <span class="error-message" id="password-error"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm-password">Confirm password *</label>
+                        <label for="confirm-password">Bekræft kodeord *</label>
                         <input 
                             type="password" 
                             id="confirm-password" 
                             name="confirmPassword" 
                             required
                             minlength="${PASSWORD_MIN_LENGTH}"
-                            placeholder="retype password"
+                            placeholder="Gentag kodeord"
                         />
                         <span class="error-message" id="confirm-password-error"></span>
                     </div>
@@ -76,10 +76,10 @@ function renderCreateUserForm() {
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="window.location.hash='#/admin/users'">
-                        Cancel
+                        Annuller
                     </button>
                     <button type="submit" class="btn btn-primary" id="submit-btn">
-                        Create User
+                        Opret bruger
                     </button>
                 </div>
 
@@ -101,13 +101,13 @@ function validateForm(){
     // username validation
     const username = document.getElementById('username').value.trim();
     if (!username) {
-        errors.username = 'Username is required.';
+        errors.username = 'Brugernavn skal være udfyldt.';
         isValid = false;
     } else if (username.length < USERNAME_MIN_LENGTH) {
-        errors.username = `Username must be at least ${USERNAME_MIN_LENGTH} characters.`;
+        errors.username = `Brugernavn skal være mindst ${USERNAME_MIN_LENGTH} tegn.`;
         isValid = false;
     } else if (username.length > USERNAME_MAX_LENGTH) {
-        errors.username = `Username must be at most ${USERNAME_MAX_LENGTH} characters.`;
+        errors.username = `Brugernavn må maks være ${USERNAME_MAX_LENGTH} tegn.`;
         isValid = false;
     }
 
@@ -115,30 +115,30 @@ function validateForm(){
     const email = document.getElementById('email').value.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-        errors.email = 'Email is required.';
+        errors.email = 'Email skal være udfyldt.';
         isValid = false;
     } else if (!emailPattern.test(email)) {
-        errors.email = 'Please enter a valid email address.';
+        errors.email = 'Indtast en gyldig email adresse.';
         isValid = false;
     }
 
     // password validation
     const password = document.getElementById('password').value;
     if (!password) {
-        errors.password = 'Password is required.';
+        errors.password = 'Kodeord skal være udfyldt.';
         isValid = false;
     } else if (password.length < PASSWORD_MIN_LENGTH) {
-        errors.password = `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`;
+        errors.password = `Kodeord skal være mindst ${PASSWORD_MIN_LENGTH} tegn.`;
         isValid = false;
     }
 
     // confirm password validation
     const confirmPassword = document.getElementById('confirm-password').value;
     if (!confirmPassword) {
-        errors['confirm-password'] = 'Confirm password';
+        errors['confirm-password'] = 'Bekræft kodeord';
         isValid = false;
     } else if (password !== confirmPassword) {
-        errors['confirm-password'] = 'Passwords do not match.';
+        errors['confirm-password'] = 'Kodeord matcher ikke.';
         isValid = false;
     }
 
@@ -173,7 +173,7 @@ function setLoadingState(isLoading) {
     const submitBtn = document.getElementById('submit-btn');
     if (submitBtn) {
         submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? 'Creating...' : 'Create User';
+        submitBtn.textContent = isLoading ? 'Opretter...' : 'Opret bruger';
     }
 }
 
@@ -201,14 +201,14 @@ async function handleCreateUserSubmit(event) {
         await createUser(userData);
 
         // success!
-        showFormMessage(`User "${userData.username}" created successfully!`, false);
+        showFormMessage(`Bruger "${userData.username}" oprettet succesfuldt!`, false);
 
         // redirect to user list after short delay
         setTimeout(() => {
             window.location.hash = '#/admin/users';
         }, 1500);
     } catch (error) {
-        showFormMessage(error.message || 'Error creating user. Please try again later.', true);
+        showFormMessage(error.message || 'Fejl ved brugeroprettelsen. Prøv igen.', true);
     } finally {
         setLoadingState(false);
     }
