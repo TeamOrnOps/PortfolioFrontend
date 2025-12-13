@@ -1,0 +1,210 @@
+/* ============================================
+   LOGIN VIEW COMPONENT
+   Modern login page matching design system
+   Made by Claude Code
+   ============================================ */
+
+/* Login container - full viewport with centered card */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-gray-100) 100%);
+    padding: var(--space-6);
+}
+
+/* Login card */
+.login-card {
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-2xl);
+    padding: var(--space-12);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+/* Logo */
+.login-logo {
+    margin-bottom: var(--space-8);
+    display: flex;
+    justify-content: center;
+}
+
+.login-logo-image {
+    height: 60px;
+    width: auto;
+    opacity: 1;
+}
+
+/* Heading */
+.login-card h1 {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.login-subtitle {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+}
+
+/* Form */
+.login-form {
+    text-align: left;
+}
+
+.login-form .form-group {
+    margin-bottom: var(--space-6);
+}
+
+.login-form label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+/* Input fields - ensure consistent sizing */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    display: block;
+    width: 100% !important;
+    min-height: 52px; /* made by claude code - consistent height */
+    padding: 14px 16px !important; /* made by claude code - explicit padding */
+    font-size: var(--text-base) !important;
+    font-family: var(--font-primary) !important;
+    line-height: 1.5 !important;
+    color: var(--color-text-primary) !important;
+    background-color: var(--color-white) !important;
+    border: 2px solid var(--color-border-light) !important;
+    border-radius: var(--radius-md) !important;
+    box-sizing: border-box !important;
+    transition: all var(--transition-fast);
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    margin: 0 !important;
+}
+
+.login-form input[type="text"]::placeholder,
+.login-form input[type="password"]::placeholder {
+    color: var(--color-text-disabled);
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.login-form input[type="text"]:disabled,
+.login-form input[type="password"]:disabled {
+    background-color: var(--color-bg-secondary);
+    cursor: not-allowed;
+}
+
+/* Login button */
+.login-button {
+    width: auto; /* made by claude code - not full width */
+    min-width: 140px; /* made by claude code - minimum button width */
+    padding: 14px 32px; /* made by claude code - match input height */
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    font-family: var(--font-primary);
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-md); /* made by claude code - match input fields */
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-top: var(--space-2);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-button:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    background-color: var(--color-gray-400);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Error message */
+.login-error {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-md);
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+    text-align: left;
+}
+
+/* Footer links */
+.login-footer {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.customer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.customer-link:hover {
+    color: var(--color-primary-dark);
+    gap: var(--space-2);
+}
+
+/* Success message (redirect) */
+.redirect-message {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 767px) {
+    .login-container {
+        padding: var(--space-4);
+    }
+
+    .login-card {
+        padding: var(--space-8);
+    }
+
+    .login-card h1 {
+        font-size: var(--text-2xl);
+    }
+
+    .login-logo-image {
+        height: 48px;
+    }
+}

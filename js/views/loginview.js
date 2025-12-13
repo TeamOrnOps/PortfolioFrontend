@@ -3,46 +3,56 @@ import { isAuthenticated, setToken } from '../utils/auth.js';
 
 /**
  * Render login form HTML
+ * Made by Claude Code - updated for new design system
  */
 function renderLoginForm() {
     return `
         <div class="login-container">
             <div class="login-card">
-                <h1>AlgeNord Login</h1>
-                <p class="login-subtitle">Administrator Access</p>
+                <!-- Logo -->
+                <div class="login-logo">
+                    <img
+                        src="/assets/logo-algenord.svg"
+                        alt="AlgeNord Logo"
+                        class="login-logo-image"
+                    />
+                </div>
+
+                <h1>Administrator Login</h1>
+                <p class="login-subtitle">Adgang til admin panel</p>
                 
                 <form id="login-form" class="login-form">
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="username">Brugernavn</label>
                         <input 
                             type="text" 
                             id="username" 
                             name="username" 
                             required 
                             autocomplete="username"
-                            placeholder="Enter username"
+                            placeholder="Indtast brugernavn"
                         />
                     </div>
                     
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Kodeord</label>
                         <input 
                             type="password" 
                             id="password" 
                             name="password" 
                             required 
                             autocomplete="current-password"
-                            placeholder="Enter password"
+                            placeholder="Indtast kodeord"
                         />
                     </div>
                     
-                    <button type="submit" class="login-button">Log In</button>
+                    <button type="submit" class="login-button">Log Ind</button>
                     
                     <div id="login-error" class="login-error" style="display: none;"></div>
                 </form>
                 
                 <div class="login-footer">
-                    <a href="#/projects" class="customer-link">View portfolio as customer →</a>
+                    <a href="#/" class="customer-link">Tilbage til portefølje →</a>
                 </div>
             </div>
         </div>
@@ -81,8 +91,8 @@ async function handleLoginSubmit(event) {
             const redirectTo = sessionStorage.getItem('redirectAfterLogin');
             sessionStorage.removeItem('redirectAfterLogin');
 
-            // Redirect to intended destination or home
-            window.location.hash = redirectTo || '#/';
+            // Redirect to intended destination or admin dashboard
+            window.location.hash = redirectTo || '#/admin';
         } else {
             throw new Error('No token received from server');
         }
@@ -108,8 +118,8 @@ async function handleLoginSubmit(event) {
 export async function renderLoginView() {
     // Check if already logged in
     if (isAuthenticated()) {
-        // User already logged in, redirect to home
-        window.location.hash = '#/';
+        // User already logged in, redirect to admin dashboard
+        window.location.hash = '#/admin';
         return '<div class="redirect-message">Redirecting...</div>';
     }
 
