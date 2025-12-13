@@ -7,8 +7,10 @@ function renderHeroImage(projects, selectedWorkType) {
         return '';
     }
 
-    // Find first project with selected workType that has featured image
-    const projectWithHero = projects.find(project => project.workType === selectedWorkType && project.images?.some(img => img.isFeatured));
+   // find project with HERO img
+    const projectWithHero = projects.find(project =>
+        project.images?.some(img => img.isFeatured)
+    );
 
     if (!projectWithHero) {
         return '';
@@ -250,7 +252,7 @@ window.applyFilters = function (workType, customerType, sortOrder) {
     // Store selected filter and re-render
     const selectedWorkType = workType || null;
     const selectedCustomerType = customerType || null;
-    const selectedSort = sortOrder || 'executionDate,desc';
+    const selectedSort = sortOrder || 'desc';
 
     //save to localstorage
     localStorage.setItem('projectFilters', JSON.stringify({

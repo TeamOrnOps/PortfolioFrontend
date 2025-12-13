@@ -193,8 +193,9 @@ function renderImagePreview(imageData) {
                             class="featured-checkbox"
                             data-image-id="${imageData.id}"
                             ${imageData.isFeatured ? 'checked' : ''}
+                            onclick="document.querySelectorAll('.featured-checkbox').forEach(cb => { if(cb !== this) cb.checked = false; })"
                         />
-                        Fremhævet
+                        Featured
                     </label>
                 </div>
             </div>
