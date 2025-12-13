@@ -179,12 +179,18 @@ function renderImagePreview(imageData) {
             </div>
             <div class="image-preview-controls">
                 <div class="control-group">
-                    <label for="image-type-${imageData.id}">Type *</label>
-                    <select id="image-type-${imageData.id}" data-image-id="${imageData.id}" class="image-type-select" required>
-                        <option value="">Vælg type</option>
-                        <option value="BEFORE" ${imageData.imageType === 'BEFORE' ? 'selected' : ''}>Før</option>
-                        <option value="AFTER" ${imageData.imageType === 'AFTER' ? 'selected' : ''}>Efter</option>
-                    </select>
+                    <label for="image-type-${imageData.id}">Type ${imageData.isFeatured ? '' : '*'}</label>
+                    <select 
+                          id="image-type-${imageData.id}" 
+                          data-image-id="${imageData.id}" 
+                          class="image-type-select" 
+                          ${imageData.isFeatured ? '' : 'required'}
+                          ${imageData.isFeatured ? 'disabled' : ''}
+                      >
+                          <option value="">${imageData.isFeatured ? 'Hero image' : 'Vælg type'}</option>
+                          <option value="BEFORE" ${imageData.imageType === 'BEFORE' ? 'selected' : ''}>Før</option>
+                          <option value="AFTER" ${imageData.imageType === 'AFTER' ? 'selected' : ''}>Efter</option>
+                      </select>
                 </div>
                 <div class="control-group checkbox-group">
                     <label>
@@ -193,8 +199,9 @@ function renderImagePreview(imageData) {
                             class="featured-checkbox"
                             data-image-id="${imageData.id}"
                             ${imageData.isFeatured ? 'checked' : ''}
+                            onclick="document.querySelectorAll('.featured-checkbox').forEach(cb => { if(cb !== this) cb.checked = false; })"
                         />
-                        Fremhævet
+                        Featured
                     </label>
                 </div>
             </div>
@@ -268,6 +275,12 @@ function attachImageControlListeners() {
             }
 
             updateImageMetadata(imageId, { isFeatured });
+
+            // If featured, clear imageType
+            if (isFeatured) {
+                updateImageMetadata(imageId, { imageType: '' });
+            }
+
             updateImagePreviews(); // Re-render to update checkboxes
         });
     });
@@ -365,9 +378,6 @@ function validateForm() {
     if (!description) {
         errors.description = 'Beskrivelse er påkrævet';
         isValid = false;
-    } else if (description.length < 10) {
-        errors.description = 'Beskrivelse skal være mindst 10 tegn';
-        isValid = false;
     }
 
     // Work type validation
@@ -407,16 +417,18 @@ function validateForm() {
         errors.images = 'Upload mindst ét billede';
         isValid = false;
     } else {
-        // Check that all images have type selected
-        const imagesWithoutType = uploadedImages.filter(img => !img.imageType);
+        // Check that all images have type selected (except featured)
+        const nonFeaturedImages = uploadedImages.filter(img => !img.isFeatured);
+        const imagesWithoutType = nonFeaturedImages.filter(img => !img.imageType);
+
         if (imagesWithoutType.length > 0) {
-            errors.images = 'Alle billeder skal have en type valgt (Før/Efter)';
+            errors.images = 'Alle (Før/Efter) billeder skal have en type valgt';
             isValid = false;
         }
 
-        // Check for at least one BEFORE and one AFTER
-        const beforeCount = uploadedImages.filter(img => img.imageType === 'BEFORE').length;
-        const afterCount = uploadedImages.filter(img => img.imageType === 'AFTER').length;
+        // Check for at least one BEFORE and one AFTER (except featured)
+        const beforeCount = nonFeaturedImages.filter(img => img.imageType === 'BEFORE').length;
+        const afterCount = nonFeaturedImages.filter(img => img.imageType === 'AFTER').length;
 
         if (beforeCount === 0) {
             errors.images = 'Der kræves mindst ét "før" billede';
@@ -519,7 +531,7 @@ async function handleCreateProjectSubmit(event) {
 
         // Build image metadata array
         const imageMetadata = uploadedImages.map(img => ({
-            imageType: img.imageType,
+            imageType: img.isFeatured ? null : img.imageType,  // Send null for featured images
             isFeatured: img.isFeatured
         }));
 
