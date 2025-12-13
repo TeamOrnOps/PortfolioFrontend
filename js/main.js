@@ -1,14 +1,14 @@
 import { isAuthenticated, logout } from './utils/auth.js';
 import { renderFrontPage } from './views/frontpage.js';
-import { renderPresentationView } from './views/presentationview.js';
+import { renderPresentationView } from './views/presentationview-new.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
 import { renderEditProjectView } from './views/formulas/editProject.js';
-import { renderUserListView } from './views/admin/userlist.js';
+// made by claude code - renamed and consolidated user management
+import { renderUserManagementView } from './views/admin/usermanagement.js';
 import { renderCreateUserView } from './views/admin/createuser.js';
-import { renderUserDetailView } from './views/admin/userdetail.js';
-import { renderEditUserView } from './views/admin/edituser.js';
 import { renderEditImageView } from './views/formulas/editImage.js';
+import { renderAdminDashboard } from './views/admin/dashboard.js';
 
 
 // ============================================
@@ -17,6 +17,7 @@ import { renderEditImageView } from './views/formulas/editImage.js';
 
 // Public routes - accessible without authentication
 const publicRoutes = [
+    '/',
     '/login',
     '/projects',
     '/project/:id',  // Presentation view for customers
@@ -24,17 +25,16 @@ const publicRoutes = [
 
 // Routes config (maps hash routes to view render functions)
 const routes = {
-    '': renderFrontPage,
-    '/': renderFrontPage,
+    '': renderPresentationView,
+    '/': renderPresentationView,
     '/projects': renderPresentationView,
     '/project/:id': renderPresentationView,
     '/login': renderLoginView,
+    '/admin': renderAdminDashboard,
     '/create-project': renderCreateProjectView,
     '/edit-project/:id': renderEditProjectView,
-    '/admin/users': renderUserListView,
+    '/admin/users': renderUserManagementView,
     '/admin/users/create': renderCreateUserView,
-    '/admin/users/:id': renderUserDetailView,
-    '/admin/users/:id/edit': renderEditUserView,
     '/edit-image/:projectId/:imageId': renderEditImageView,
 };
 
