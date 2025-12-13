@@ -46,7 +46,7 @@ function renderCreateProjectForm() {
     return `
         <div class="create-project-page">
             <nav class="breadcrumb">
-                <a href="#/">← Tilbage til oversigt</a>
+                <a href="#/admin">← Tilbage til oversigt</a>
             </nav>
 
             <header class="page-header">
@@ -152,7 +152,7 @@ function renderCreateProjectForm() {
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="window.location.hash='#/'">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.hash='#/admin'">
                         Annuller
                     </button>
                     <button type="submit" class="btn btn-primary" id="submit-btn">
@@ -550,9 +550,9 @@ async function handleCreateProjectSubmit(event) {
         showFormMessage('Projekt oprettet succesfuldt!', false);
         resetForm();
 
-        // Redirect to frontpage after short delay
+        // Redirect to admin dashboard after short delay
         setTimeout(() => {
-            window.location.hash = '#/';
+            window.location.hash = '#/admin';
         }, 1500);
 
     } catch (error) {

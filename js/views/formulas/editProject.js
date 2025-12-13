@@ -67,7 +67,7 @@ function renderEditProjectForm(project) {
                 </div>
 
                 <button class="btn btn-primary" type="submit">Gem ændringer</button>
-                <button class="btn btn-secondary" type="button" onclick="window.location.hash='#/'">Annuller</button>
+                <button class="btn btn-secondary" type="button" onclick="window.location.hash='#/admin'">Annuller</button>
 
                 <p id="edit-project-message"></p>
             </form>
@@ -97,7 +97,7 @@ export function initEditProjectForm(projectId) {
             msg.textContent = "Projekt opdateret!";
             msg.style.color = "green";
 
-            setTimeout(() => window.location.hash = "#/", 800);
+            setTimeout(() => window.location.hash = "#/admin", 800);
         }
         catch (err) {
             msg.textContent = "Fejl: " + err.message;
