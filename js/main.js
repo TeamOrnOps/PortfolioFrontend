@@ -43,12 +43,14 @@ const routes = {
 // ============================================
 
 /**
- * Get current route from URL hash
+ * Get current route from URL hash (without query params)
  * @returns {string}
  */
 function getCurrentRoute() {
     const hash = window.location.hash.slice(1);
-    return hash || '/';
+    // Remove query params from hash for routing
+    const path = hash.split('?')[0];
+    return path || '/';
 }
 
 /**

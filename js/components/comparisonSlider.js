@@ -40,12 +40,14 @@ export function renderComparisonSlider(beforeImage, afterImage, baseUrl = '') {
                     src="${beforeUrl}"
                     alt="Før billede"
                     loading="lazy"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3EBillede ikke fundet%3C/text%3E%3C/svg%3E';"
                 />
                 <img
                     slot="second"
                     src="${afterUrl}"
                     alt="Efter billede"
                     loading="lazy"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3EBillede ikke fundet%3C/text%3E%3C/svg%3E';"
                 />
                 <div slot="handle" class="slider-handle">
                     <svg width="40" height="40" viewBox="0 0 40 40">

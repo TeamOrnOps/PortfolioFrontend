@@ -6,7 +6,10 @@
 
 import { fetchAllProjects, deleteProject } from '../../api.js';
 import { renderAdminNavigation, initAdminNavigation } from '../../components/adminNavigation.js';
-import { getNavigationCategories } from '../../components/navigation.js';
+import { renderComparisonSlider, getBeforeAfterImages } from '../../components/comparisonSlider.js';
+import { renderFilterBar, getWorkTypeCategories } from '../../components/filterBar.js';
+import { saveFilters, loadFilters } from '../../components/filterStorage.js';
+import { config } from '../../config.js';
 
 // =============================
 // Helpers (reused from presentation view)
@@ -24,83 +27,39 @@ function formatDate(dateStr) {
     });
 }
 
-function getFeaturedImage(project) {
-    // made by claude code
-    if (!project.images || project.images.length === 0) return null;
-    const featured = project.images.find((img) => img.isFeatured);
-    return featured || project.images[0];
-}
-
-// =============================
-// Filter Bar Component (reused)
-// =============================
-
-function renderFilterBar(categories, activeCategory = null) {
-    // made by claude code
-    const filterButtons = categories
-        .map(
-            (cat) => `
-        <button
-            class="filter-button ${activeCategory === cat.value ? 'active' : ''}"
-            data-category="${cat.value || ''}"
-            onclick="window.applyAdminFilter('${cat.value || ''}')"
-        >
-            ${cat.label}
-        </button>
-    `
-        )
-        .join('');
-
-    return `
-        <section class="filter-bar">
-            <div class="filter-bar-container">
-                <div class="filter-buttons">
-                    ${filterButtons}
-                </div>
-            </div>
-        </section>
-    `;
-}
 
 // =============================
 // Project Card Component (with admin actions)
 // =============================
 
 function renderAdminProjectCard(project) {
-    // made by claude code
-    const featured = getFeaturedImage(project);
+    // Get before/after images for comparison slider
+    const { beforeImage, afterImage } = getBeforeAfterImages(project);
 
     return `
         <article class="project-card admin-project-card">
-            <div class="project-card-image-wrapper">
-                ${
-                    featured
-                        ? `<img
-                            src="${featured.url}"
-                            alt="Projekt: ${project.title}"
-                            class="project-card-image"
-                            loading="lazy"
-                        />`
-                        : '<div class="project-card-image placeholder"></div>'
-                }
-            </div>
+            <!-- Before/After Comparison Slider -->
+            ${renderComparisonSlider(beforeImage, afterImage, config.apiBaseUrl)}
+
+            <!-- Project Info -->
             <div class="project-card-content">
                 <div class="project-card-tags">
                     <span>${project.workType}</span>
                     <span>•</span>
                     <span>${project.customerType}</span>
                 </div>
+
                 <h3 class="project-card-title">${project.title}</h3>
+
                 <p class="project-card-description">
                     ${project.description}
                 </p>
-                ${
-                    project.executionDate
-                        ? `<div class="project-card-meta">
-                            <span>Udført: ${formatDate(project.executionDate)}</span>
-                        </div>`
-                        : ''
-                }
+
+                ${project.executionDate ? `
+                    <div class="project-card-meta">
+                        <span>Udført: ${formatDate(project.executionDate)}</span>
+                    </div>
+                ` : ''}
 
                 <!-- Admin Actions -->
                 <div class="admin-actions">
@@ -108,7 +67,7 @@ function renderAdminProjectCard(project) {
                         Rediger
                     </a>
                     <button
-                        onclick="window.confirmDeleteProject(${project.id}, '${project.title}')"
+                        onclick="window.confirmDeleteProject(${project.id}, '${project.title.replace(/'/g, "\\'")}')"
                         class="admin-btn admin-btn-delete"
                     >
                         Slet
@@ -123,9 +82,9 @@ function renderAdminProjectCard(project) {
 // Dashboard Overview
 // =============================
 
-function renderDashboard(projects, activeCategory = null) {
-    // made by claude code
-    const categories = getNavigationCategories();
+function renderDashboard(projects, filters = {}) {
+    const { workType = null, customerType = null, sortOrder = 'desc' } = filters;
+    const categories = getWorkTypeCategories();
 
     // Render project cards
     const projectCards =
@@ -142,7 +101,15 @@ function renderDashboard(projects, activeCategory = null) {
     return `
         ${renderAdminNavigation()}
 
-        ${renderFilterBar(categories, activeCategory)}
+        ${renderFilterBar({
+            categories: categories,
+            activeCategory: workType,
+            selectedCustomerType: customerType,
+            sortOrder: sortOrder,
+            showCustomerType: true,
+            showSort: true,
+            onFilterChange: 'applyAdminFilter'
+        })}
 
         <section class="project-grid-section admin-section">
             <div class="project-grid-container">
@@ -162,21 +129,31 @@ function renderDashboard(projects, activeCategory = null) {
 // =============================
 
 export async function renderAdminDashboard(params) {
-    // made by claude code
-
-    // Get current category from URL params
+    // Get URL params
     const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
-    const activeCategory = urlParams.get('category') || null;
+
+    // Load saved filters from localStorage
+    const savedFilters = loadFilters();
+
+    // Merge URL params with saved filters (URL takes precedence)
+    const filters = {
+        workType: urlParams.get('workType') || savedFilters.workType || null,
+        customerType: urlParams.get('customerType') || savedFilters.customerType || null,
+        sortOrder: urlParams.get('sort') || savedFilters.sortOrder || 'desc'
+    };
 
     try {
-        const filters = {};
-        if (activeCategory) {
-            filters.workType = activeCategory;
-        }
+        // Build API filters
+        const apiFilters = {};
+        if (filters.workType) apiFilters.workType = filters.workType;
+        if (filters.customerType) apiFilters.customerType = filters.customerType;
+        if (filters.sortOrder) apiFilters.sort = filters.sortOrder;
 
-        const projects = await fetchAllProjects(filters);
+        // Fetch projects
+        const projects = await fetchAllProjects(apiFilters);
 
-        const html = renderDashboard(projects, activeCategory);
+        // Render dashboard
+        const html = renderDashboard(projects, filters);
 
         // Initialize components after render
         setTimeout(() => {
@@ -200,9 +177,25 @@ export async function renderAdminDashboard(params) {
 // Global Filter Handler
 // =============================
 
-window.applyAdminFilter = function (category) {
-    // made by claude code
-    const newHash = category ? `#/admin?category=${category}` : '#/admin';
+window.applyAdminFilter = function(workType, customerType, sortOrder) {
+    // Save filters to localStorage
+    saveFilters({
+        workType: workType || null,
+        customerType: customerType || null,
+        sortOrder: sortOrder || 'desc'
+    });
+
+    // Build URL params
+    const params = new URLSearchParams();
+    if (workType) params.set('workType', workType);
+    if (customerType) params.set('customerType', customerType);
+    if (sortOrder && sortOrder !== 'desc') params.set('sort', sortOrder);
+
+    // Navigate with new filters
+    const newHash = params.toString()
+        ? `#/admin?${params.toString()}`
+        : '#/admin';
+
     window.location.hash = newHash;
 };
 
