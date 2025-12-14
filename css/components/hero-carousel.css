@@ -7,9 +7,9 @@
 .hero-carousel {
     position: relative;
     width: 100%;
-    height: 60vh;
+    height: 50vh;
     min-height: 400px;
-    max-height: 700px;
+    max-height: 550px;
     overflow: hidden;
     background-color: var(--color-gray-100);
 }
@@ -28,12 +28,16 @@
 
 /* Slide image */
 .hero-carousel .slide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     /* Override global img opacity animation */
     opacity: 1 !important;
+    display: block;
 }
 
 /* Gradient overlay for text readability */
@@ -189,8 +193,9 @@
 /* Tablet */
 @media (max-width: 1023px) {
     .hero-carousel {
-        height: 50vh;
+        height: 45vh;
         min-height: 350px;
+        max-height: 500px;
     }
 
     .hero-carousel .slide-content {
@@ -216,7 +221,7 @@
     .hero-carousel {
         height: 40vh;
         min-height: 300px;
-        max-height: 500px;
+        max-height: 450px;
     }
 
     .hero-carousel .slide-content {

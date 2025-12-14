@@ -31,6 +31,8 @@ function buildImageUrl(url) {
  */
 export function renderHeroCarousel(featuredImages) {
     // made by claude code
+    console.log('[HeroCarousel] Featured images:', featuredImages);
+
     if (!featuredImages || featuredImages.length === 0) {
         return `
             <div class="hero-carousel-placeholder">
@@ -44,18 +46,28 @@ export function renderHeroCarousel(featuredImages) {
 
     const slidesHtml = featuredImages
         .map(
-            (image) => `
+            (image) => {
+                const imageUrl = buildImageUrl(image.url);
+                console.log('[HeroCarousel] Rendering slide:', imageUrl);
+                return `
         <div class="swiper-slide">
             <img
-                src="${buildImageUrl(image.url)}"
-                alt="${image.title || 'Featured project'}"
+                src="${imageUrl}"
+                alt="${image.projectTitle || 'Featured project'}"
                 class="slide-image"
                 loading="eager"
-                onerror="this.onerror=null; this.style.display='none';"
+                onerror="console.error('Failed to load image:', this.src); this.onerror=null; this.parentElement.innerHTML='<div style=\\'background: #f1f5f9; height: 100%; display: flex; align-items: center; justify-content: center;\\'>Billede kunne ikke indlæses</div>';"
             />
             <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <div class="container">
+                    <h2 class="slide-title">${image.projectTitle || ''}</h2>
+                    <p class="slide-description">${image.projectWorkType || ''}</p>
+                </div>
+            </div>
         </div>
-    `
+    `;
+            }
         )
         .join('');
 
