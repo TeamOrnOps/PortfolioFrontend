@@ -177,7 +177,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    border: 2px dashed var(--color-gray-300, #ddd);
+    border: 2px dashed var(--color-gray-500, #dddddd);
 }
 
 .comparison-placeholder .placeholder-content {

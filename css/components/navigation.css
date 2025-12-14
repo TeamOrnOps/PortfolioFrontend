@@ -21,6 +21,7 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: var(--shadow-sm);
+    opacity: 75%;
 }
 
 /* Navigation inner container */

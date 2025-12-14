@@ -16,24 +16,27 @@
     --color-accent: #FF6716;
     --color-accent-light: #ff8542;
     --color-accent-dark: #e55a13;
+    /* TODO: Unused variable - consider removing */
     --color-accent-rgb: 255, 103, 22;
 
     /* NEUTRALS (Gray Scale) */
     --color-black: #000000;
-    --color-gray-900: #0A0A0A;
-    --color-gray-700: #333333;
-    --color-gray-500: #777777;
-    --color-gray-400: #888888;
-    --color-gray-200: #DDDDDD;
-    --color-gray-100: #F0F2F6;
-    --color-gray-50: #F6F6F6;
-    --color-white: #FFFFFF;
+    --color-white: #ffffff;
+    --color-gray-900: #0f172a;
+    --color-gray-700: #334155;
+    --color-gray-600: #475569;
+    --color-gray-500: #64748b;
+    --color-gray-400: #94a3b8;
+    --color-gray-200: #e2e8f0;
+    --color-gray-100: #f1f5f9;
+    --color-gray-50: #f8fafc;
 
     /* SEMANTIC COLORS */
+    /* TODO: Unused variable - consider removing */
     --color-success: #009251;
     --color-danger: #ef4444;
+    /* TODO: Unused variable - consider removing */
     --color-warning: #FF6716;
-    --color-info: #3b82f6;
 
     /* TEXT COLORS */
     --color-text-primary: var(--color-gray-900);
@@ -41,15 +44,25 @@
     --color-text-muted: var(--color-gray-500);
     --color-text-disabled: var(--color-gray-400);
 
+    /* Legacy aliases (for backward compatibility) */
+    --color-text: var(--color-text-primary);
+    --color-text-light: var(--color-text-muted);
+
     /* BACKGROUND COLORS */
     --color-bg-primary: var(--color-white);
     --color-bg-secondary: var(--color-gray-50);
     --color-bg-tertiary: var(--color-gray-100);
 
+    /* Legacy alias */
+    --color-bg: var(--color-bg-primary);
+
     /* BORDER COLORS */
     --color-border-light: var(--color-gray-200);
     --color-border-medium: var(--color-gray-400);
     --color-border-dark: var(--color-gray-700);
+
+    /* Legacy alias */
+    --color-border: var(--color-border-light);
 }
 
 /* === TYPOGRAPHY === */
@@ -68,6 +81,7 @@
     --text-3xl: 1.953rem;    /* 31px */
     --text-4xl: 2.441rem;    /* 39px */
     --text-5xl: 3.052rem;    /* 49px */
+    --text-6xl: 3.815rem;    /* 61px */
 
     /* FONT WEIGHTS */
     --weight-regular: 400;
@@ -100,8 +114,11 @@
 
 /* === LAYOUT SIZES === */
 :root {
+    /* TODO: Unused variable - consider removing */
     --container-sm: 640px;
+    /* TODO: Unused variable - consider removing */
     --container-md: 768px;
+    /* TODO: Unused variable - consider removing */
     --container-lg: 1024px;
     --container-xl: 1280px;
     --container-2xl: 1536px;
