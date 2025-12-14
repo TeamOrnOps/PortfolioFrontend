@@ -12,35 +12,52 @@
  */
 export function renderNavigation(categories, activeCategory = null) {
     // made by claude code
+    // Normalize activeCategory: treat null, undefined, and empty string as the same
+    const normalizedActive = activeCategory || null;
+    console.log('[Navigation] Active category:', activeCategory, '→ Normalized:', normalizedActive);
+
     const categoryLinks = categories
         .map(
-            (cat) => `
+            (cat) => {
+                // Normalize category value the same way
+                const normalizedCatValue = cat.value || null;
+                const isActive = normalizedActive === normalizedCatValue;
+
+                console.log(`[Navigation] ${cat.label}: value=${cat.value}, normalized=${normalizedCatValue}, isActive=${isActive}`);
+
+                return `
         <li>
             <a
                 href="#/projects${cat.value ? '?category=' + cat.value : ''}"
-                class="nav-link ${activeCategory === cat.value ? 'active' : ''}"
+                class="nav-link ${isActive ? 'active' : ''}"
                 data-category="${cat.value || ''}"
             >
                 ${cat.label}
             </a>
         </li>
-    `
+    `;
+            }
         )
         .join('');
 
     const mobileLinks = categories
         .map(
-            (cat) => `
+            (cat) => {
+                const normalizedCatValue = cat.value || null;
+                const isActive = normalizedActive === normalizedCatValue;
+
+                return `
         <li>
             <a
                 href="#/projects${cat.value ? '?category=' + cat.value : ''}"
-                class="nav-mobile-link ${activeCategory === cat.value ? 'active' : ''}"
+                class="nav-mobile-link ${isActive ? 'active' : ''}"
                 data-category="${cat.value || ''}"
             >
                 ${cat.label}
             </a>
         </li>
-    `
+    `;
+            }
         )
         .join('');
 

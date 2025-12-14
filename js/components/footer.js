@@ -31,6 +31,7 @@ export function renderFooter() {
     `;
 }
 
+// TODO: Unused function - consider removing
 /**
  * Render full footer with content (for future use)
  * @param {Object} footerData - Footer content data

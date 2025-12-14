@@ -36,6 +36,7 @@ export function loadFilters() {
     }
 }
 
+// TODO: Unused function - consider removing
 /**
  * Clear saved filters from localStorage
  */
@@ -47,6 +48,7 @@ export function clearFilters() {
     }
 }
 
+// TODO: Unused function - consider removing
 /**
  * Get filter value with fallback
  *
