@@ -40,6 +40,22 @@ function getFeaturedImage(project) {
     return featured || project.images[0];
 }
 
+/**
+ * Build full image URL
+ * Handles both relative and absolute URLs
+ * @param {string} url - Image URL from API
+ * @returns {string} Full image URL
+ */
+function buildImageUrl(url) {
+    if (!url) return '';
+    // If URL is already absolute (starts with http:// or https://), return as-is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    // Otherwise, prepend backend URL (hardcoded for development)
+    return `http://localhost:8080${url}`;
+}
+
 // =============================
 // Filter Bar Component
 // =============================
@@ -78,18 +94,20 @@ function renderFilterBar(categories, activeCategory = null) {
 function renderProjectCard(project) {
     // made by claude code
     const featured = getFeaturedImage(project);
+    const imageUrl = featured ? buildImageUrl(featured.url) : null;
 
     return `
         <article class="project-card">
             <a href="#/project/${project.id}" style="text-decoration: none; color: inherit;">
                 <div class="project-card-image-wrapper">
                     ${
-                        featured
+                        imageUrl
                             ? `<img
-                                src="${featured.url}"
+                                src="${imageUrl}"
                                 alt="Projekt: ${project.title}"
                                 class="project-card-image"
                                 loading="lazy"
+                                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'project-card-image placeholder\\'></div>';"
                             />`
                             : '<div class="project-card-image placeholder"></div>'
                     }
@@ -164,6 +182,7 @@ function renderProjectDetail(project) {
     // made by claude code
     const categories = getNavigationCategories();
     const featuredImage = getFeaturedImage(project);
+    const featuredImageUrl = featuredImage ? buildImageUrl(featuredImage.url) : null;
 
     // Separate before/after images
     const beforeImages =
@@ -180,10 +199,11 @@ function renderProjectDetail(project) {
             <div class="project-card">
                 <div class="project-card-image-wrapper">
                     <img
-                        src="${img.url}"
+                        src="${buildImageUrl(img.url)}"
                         alt="${title} – ${project.title}"
                         class="project-card-image"
                         loading="lazy"
+                        onerror="this.onerror=null; this.style.display='none';"
                     />
                     <span class="project-card-badge ${badgeClass}">${title}</span>
                 </div>
@@ -254,11 +274,12 @@ function renderProjectDetail(project) {
                     </div>
                     <div style="border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-2xl);">
                         ${
-                            featuredImage
+                            featuredImageUrl
                                 ? `<img
-                                    src="${featuredImage.url}"
+                                    src="${featuredImageUrl}"
                                     alt="${project.title}"
                                     style="width: 100%; height: auto; display: block;"
+                                    onerror="this.onerror=null; this.style.display='none';"
                                 />`
                                 : ''
                         }
