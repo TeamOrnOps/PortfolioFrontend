@@ -9,7 +9,6 @@ import { renderAdminNavigation, initAdminNavigation } from '../../components/adm
 import { renderComparisonSlider, getBeforeAfterImages } from '../../components/comparisonSlider.js';
 import { renderFilterBar, getWorkTypeCategories } from '../../components/filterBar.js';
 import { saveFilters, loadFilters } from '../../components/filterStorage.js';
-import { config } from '../../config.js';
 
 // =============================
 // Helpers (reused from presentation view)
@@ -39,7 +38,7 @@ function renderAdminProjectCard(project) {
     return `
         <article class="project-card admin-project-card">
             <!-- Before/After Comparison Slider -->
-            ${renderComparisonSlider(beforeImage, afterImage, config.apiBaseUrl)}
+            ${renderComparisonSlider(beforeImage, afterImage)}
 
             <!-- Project Info -->
             <div class="project-card-content">
