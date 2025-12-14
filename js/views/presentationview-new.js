@@ -16,6 +16,7 @@ import {
     getNavigationCategories,
 } from '../components/navigation.js';
 import { renderFooter } from '../components/footer.js';
+import { renderComparisonSlider, getBeforeAfterImages } from '../components/comparisonSlider.js';
 
 // =============================
 // Helpers
@@ -54,6 +55,98 @@ function buildImageUrl(url) {
     }
     // Otherwise, prepend backend URL (hardcoded for development)
     return `http://localhost:8080${url}`;
+}
+
+// =============================
+// Intro Section Component
+// =============================
+
+function renderIntroSection() {
+    // made by claude code
+    return `
+        <section class="intro-section">
+            <div class="container">
+                <h1 class="intro-title">Velkommen til AlgeNord Portfolio</h1>
+                <p class="intro-description">
+                    Vi specialiserer os i professionel rensning og vedligeholdelse.
+                    Se vores gennemførte projekter nedenfor, opdelt efter kategori.
+                </p>
+            </div>
+        </section>
+    `;
+}
+
+// =============================
+// Horizontal Project Row Component (with Comparison Slider)
+// =============================
+
+function renderProjectRow(project) {
+    // made by claude code
+    const { beforeImage, afterImage } = getBeforeAfterImages(project);
+
+    return `
+        <article class="project-row">
+            <!-- Venstre: Comparison Slider -->
+            <div class="project-row-images">
+                ${renderComparisonSlider(beforeImage, afterImage)}
+            </div>
+
+            <!-- Højre: Info -->
+            <div class="project-row-info">
+                <h3 class="project-title">${project.title}</h3>
+                <p class="project-description">${project.description}</p>
+                <div class="project-meta">
+                    <span class="badge">${project.customerType}</span>
+                    ${project.executionDate ? `
+                        <span class="date">Udført: ${formatDate(project.executionDate)}</span>
+                    ` : ''}
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+// =============================
+// Category Sections Component
+// =============================
+
+function renderCategorySections(projects) {
+    // made by claude code
+    const categories = getNavigationCategories();
+
+    // Grupper projekter efter workType
+    const projectsByCategory = {};
+
+    categories.forEach(cat => {
+        if (cat.value) {  // Skip "Alle"
+            projectsByCategory[cat.value] = projects.filter(
+                p => p.workType === cat.value
+            );
+        }
+    });
+
+    // Render hver kategori sektion
+    const sections = categories
+        .filter(cat => cat.value)  // Skip "Alle"
+        .map(cat => {
+            const categoryProjects = projectsByCategory[cat.value] || [];
+
+            if (categoryProjects.length === 0) return '';
+
+            return `
+                <section id="category-${cat.value}" class="category-section">
+                    <div class="container">
+                        <h2 class="category-title">${cat.label}</h2>
+                        <div class="project-list">
+                            ${categoryProjects.map(renderProjectRow).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        })
+        .join('');
+
+    return sections;
 }
 
 // =============================
@@ -143,32 +236,17 @@ function renderProjectsOverview(projects, activeCategory = null) {
     // made by claude code
     const categories = getNavigationCategories();
 
-    // Get featured images (filtered by category if active)
-    const featuredImages = getFeaturedImages(projects, activeCategory);
-
-    // Render project cards
-    const projectCards =
-        projects && projects.length > 0
-            ? projects.map((project) => renderProjectCard(project)).join('')
-            : `
-        <div class="project-grid-empty">
-            <h3>Ingen projekter fundet</h3>
-            <p>Der er ingen projekter i denne kategori endnu.</p>
-        </div>
-    `;
+    // Get featured images (all projects, not filtered by category)
+    const featuredImages = getFeaturedImages(projects);
 
     return `
         ${renderNavigation(categories, activeCategory)}
 
+        ${renderIntroSection()}
+
         ${renderHeroCarousel(featuredImages)}
 
-        <section class="project-grid-section">
-            <div class="project-grid-container">
-                <div class="project-grid">
-                    ${projectCards}
-                </div>
-            </div>
-        </section>
+        ${renderCategorySections(projects)}
 
         ${renderFooter()}
     `;
@@ -331,6 +409,7 @@ export async function renderPresentationView(params) {
             setTimeout(() => {
                 initNavigation();
                 initHeroCarousel();
+                initSmoothScroll();
             }, 100);
 
             return html;
@@ -372,6 +451,42 @@ export async function renderPresentationView(params) {
             ${renderFooter()}
         `;
     }
+}
+
+// =============================
+// Smooth Scroll to Category
+// =============================
+
+function initSmoothScroll() {
+    // made by claude code
+    // Add smooth scroll to navigation links
+    const navLinks = document.querySelectorAll('[data-category]');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const category = link.getAttribute('data-category');
+
+            // If "Alle" (empty category), scroll to top
+            if (!category) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Otherwise, scroll to the category section
+            const section = document.getElementById(`category-${category}`);
+            if (section) {
+                e.preventDefault();
+                const offset = 100; // Account for sticky navigation
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 }
 
 // =============================
