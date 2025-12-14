@@ -224,6 +224,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Override global img opacity animation */
+    opacity: 1 !important;
 }
 
 .remove-image-btn {

@@ -59,6 +59,8 @@
     object-fit: cover;
     object-position: center;
     transition: transform var(--transition-slow);
+    /* Override global img opacity animation */
+    opacity: 1 !important;
 }
 
 .project-card:hover .project-card-image {
