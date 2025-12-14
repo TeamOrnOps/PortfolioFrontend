@@ -5,6 +5,26 @@
 // ============================================
 
 /**
+ * Build full image URL
+ * Handles both relative and absolute URLs
+ * Backend now returns full URLs in new uploads
+ * But old data might still have relative URLs
+ * @param {string} url - Image URL from API
+ * @returns {string} Full image URL
+ */
+function buildImageUrl(url) {
+    if (!url) return '';
+    // If URL already starts with http:// or https://, return as-is
+    // This handles new uploads from backend (full URLs)
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    // Otherwise prepend localhost:8080 for backward compatibility
+    // This handles any old relative URLs still in database
+    return `http://localhost:8080${url}`;
+}
+
+/**
  * Render hero carousel HTML
  * @param {Array} featuredImages - Array of featured images
  * @returns {string} HTML string
@@ -27,10 +47,11 @@ export function renderHeroCarousel(featuredImages) {
             (image) => `
         <div class="swiper-slide">
             <img
-                src="${image.url}"
+                src="${buildImageUrl(image.url)}"
                 alt="${image.title || 'Featured project'}"
                 class="slide-image"
                 loading="eager"
+                onerror="this.onerror=null; this.style.display='none';"
             />
             <div class="slide-overlay"></div>
         </div>

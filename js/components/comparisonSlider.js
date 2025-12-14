@@ -24,13 +24,23 @@ export function renderComparisonSlider(beforeImage, afterImage, baseUrl = '') {
         `;
     }
 
-    // Construct URLs (prepend baseUrl if provided)
-    const beforeUrl = baseUrl
-        ? `${baseUrl}${beforeImage.url}`
-        : beforeImage.url;
-    const afterUrl = baseUrl
-        ? `${baseUrl}${afterImage.url}`
-        : afterImage.url;
+    // Build URLs with smart check
+    // If URL already starts with http://, use as-is (backend returns full URLs now)
+    // Otherwise prepend baseUrl or default to localhost:8080 for backward compatibility
+    const buildUrl = (imageUrl) => {
+        console.log('[ComparisonSlider] Input URL:', imageUrl);
+        if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+            console.log('[ComparisonSlider] Using full URL as-is:', imageUrl);
+            return imageUrl;  // Already full URL from backend
+        }
+        const fullUrl = baseUrl ? `${baseUrl}${imageUrl}` : `http://localhost:8080${imageUrl}`;
+        console.log('[ComparisonSlider] Built URL:', fullUrl);
+        return fullUrl;
+    };
+
+    const beforeUrl = buildUrl(beforeImage.url);
+    const afterUrl = buildUrl(afterImage.url);
+    console.log('[ComparisonSlider] Final URLs:', { beforeUrl, afterUrl });
 
     return `
         <div class="comparison-slider-wrapper">
