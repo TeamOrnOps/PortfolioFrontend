@@ -164,3 +164,32 @@
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* Placeholder state when images are missing */
+.comparison-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--color-gray-100, #f5f5f5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 2px dashed var(--color-gray-300, #ddd);
+}
+
+.comparison-placeholder .placeholder-content {
+    text-align: center;
+    color: var(--color-text-muted, #666);
+    padding: 2rem;
+}
+
+.comparison-placeholder .placeholder-content p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Wrapper for comparison slider */
+.comparison-slider-wrapper {
+    position: relative;
+    width: 100%;
+}
