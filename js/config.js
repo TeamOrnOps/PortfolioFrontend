@@ -35,6 +35,7 @@ function getApiBaseUrl() {
     return 'http://localhost:8080';
 }
 
+// TODO: Unused function - consider removing
 /**
  * Check if running in development mode
  */
@@ -42,6 +43,7 @@ export function isDevelopment() {
     return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 }
 
+// TODO: Unused function - consider removing
 /**
  * Check if running in production mode
  */

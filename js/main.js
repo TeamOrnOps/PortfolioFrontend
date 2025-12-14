@@ -1,5 +1,4 @@
 import { isAuthenticated, logout } from './utils/auth.js';
-import { renderFrontPage } from './views/frontpage.js';
 import { renderPresentationView } from './views/presentationview-new.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
@@ -152,10 +151,8 @@ async function router() {
 
     if (matchedRoute) {
         try {
-            // Pass null to frontpage, pass params object to other views
-            const html = matchedRoute === renderFrontPage
-                ? await matchedRoute(null)
-                : await matchedRoute(params);
+            // Render matched route with params
+            const html = await matchedRoute(params);
 
             mainContent.innerHTML = html;
 
