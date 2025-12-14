@@ -26,6 +26,7 @@
 @import url('views/edit-project.css');
 @import url('views/admin.css');
 @import url('views/admin-dashboard.css');
+@import url('views/presentationview-new.css');
 
 /* === 4. LEGACY === */
 /* Old styles - will be gradually migrated */
