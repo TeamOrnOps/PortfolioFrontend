@@ -1,7 +1,6 @@
 // ============================================
 // ADMIN DASHBOARD VIEW
 // Admin overview with project management
-// Made by Claude Code
 // ============================================
 
 import { fetchAllProjects, deleteProject } from '../../api.js';
@@ -15,7 +14,6 @@ import { saveFilters, loadFilters } from '../../components/filterStorage.js';
 // =============================
 
 function formatDate(dateStr) {
-    // made by claude code
     if (!dateStr) return '';
     const d = new Date(dateStr);
     if (Number.isNaN(d.getTime())) return dateStr;
@@ -203,7 +201,6 @@ window.applyAdminFilter = function(workType, customerType, sortOrder) {
 // =============================
 
 window.confirmDeleteProject = async function (projectId, projectTitle) {
-    // made by claude code
     const confirmed = confirm(
         `Er du sikker på at du vil slette projektet "${projectTitle}"?\n\nDenne handling kan ikke fortrydes.`
     );

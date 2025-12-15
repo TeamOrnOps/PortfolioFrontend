@@ -1,7 +1,6 @@
 // ============================================
 // HERO CAROUSEL COMPONENT
 // Featured images slider with Swiper.js
-// Made by Claude Code
 // ============================================
 
 /**
@@ -30,7 +29,6 @@ function buildImageUrl(url) {
  * @returns {string} HTML string
  */
 export function renderHeroCarousel(featuredImages) {
-    // made by claude code
     console.log('[HeroCarousel] Featured images:', featuredImages);
 
     if (!featuredImages || featuredImages.length === 0) {
@@ -94,7 +92,6 @@ export function renderHeroCarousel(featuredImages) {
  * Should be called after DOM is rendered
  */
 export function initHeroCarousel() {
-    // made by claude code
     const carouselElement = document.getElementById('hero-carousel');
 
     if (!carouselElement) {
@@ -174,7 +171,6 @@ export function initHeroCarousel() {
  * @returns {Array} Array of featured image objects
  */
 export function getFeaturedImages(projects, workType = null) {
-    // made by claude code
     if (!projects || projects.length === 0) {
         return [];
     }

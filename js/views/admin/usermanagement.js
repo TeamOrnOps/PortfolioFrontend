@@ -1,10 +1,8 @@
-// made by claude code
 import { fetchAllUsers, deleteUser, updateUser } from '../../api.js';
 import { getCurrentUser } from '../../utils/auth.js';
 
 //render single user row in table
 function renderUserRow(user) {
-    // made by claude code
     const currentUser = getCurrentUser();
     const isCurrentUser = currentUser && currentUser.username === user.username;
 
@@ -57,7 +55,6 @@ function renderErrorState(error) {
 
 // render password modal
 function renderPasswordModal() {
-    // made by claude code
     return `
         <div id="password-modal" class="modal" style="display: none;">
             <div class="modal-backdrop" onclick="window.closePasswordModal()"></div>
@@ -114,7 +111,6 @@ function renderPasswordModal() {
 
 // Show toast notification
 function showToast(message, type = 'success') {
-    // made by claude code
     // Remove existing toast if any
     const existingToast = document.querySelector('.toast-notification');
     if (existingToast) {
@@ -140,7 +136,6 @@ function showToast(message, type = 'success') {
 
 // Handle inline editing
 function initInlineEditing() {
-    // made by claude code
     const editableCells = document.querySelectorAll('.editable-cell');
 
     editableCells.forEach(cell => {
@@ -189,7 +184,6 @@ function initInlineEditing() {
 
 // Save inline edit
 async function saveInlineEdit(cell, input, displaySpan) {
-    // made by claude code
     const userId = parseInt(cell.dataset.userId, 10);
     const field = cell.dataset.field;
     const newValue = input.value.trim();
@@ -265,7 +259,6 @@ function isValidEmail(email) {
 
 // Handle user deletion from list view
 async function handleDeleteUserFromList(userId, username) {
-    // made by claude code
     // Confirm deletion
     const confirmed = confirm(`Er du sikker på at du vil slette brugeren "${username}"? Denne handling kan ikke fortrydes.`);
     if (!confirmed) return;
@@ -305,7 +298,6 @@ async function handleDeleteUserFromList(userId, username) {
 
 // Open password modal
 function openPasswordModal(userId, username, isCurrentUser) {
-    // made by claude code
     const modal = document.getElementById('password-modal');
     const modalTitle = document.getElementById('modal-title');
     const userIdInput = document.getElementById('password-user-id');
@@ -339,7 +331,6 @@ function openPasswordModal(userId, username, isCurrentUser) {
 
 // Close password modal
 function closePasswordModal() {
-    // made by claude code
     const modal = document.getElementById('password-modal');
     modal.style.display = 'none';
     document.body.style.overflow = ''; // Restore scrolling
@@ -347,7 +338,6 @@ function closePasswordModal() {
 
 // Show modal message
 function showModalMessage(message, isError = true) {
-    // made by claude code
     const messageDiv = document.getElementById('modal-message');
     if (messageDiv) {
         messageDiv.textContent = message;
@@ -359,7 +349,6 @@ function showModalMessage(message, isError = true) {
 
 // Set loading state for modal
 function setModalLoadingState(isLoading) {
-    // made by claude code
     const submitBtn = document.getElementById('password-submit-btn');
     if (submitBtn) {
         submitBtn.disabled = isLoading;
@@ -369,7 +358,6 @@ function setModalLoadingState(isLoading) {
 
 // Handle password change
 async function handlePasswordChange(event) {
-    // made by claude code
     event.preventDefault();
 
     // Clear previous errors
@@ -417,7 +405,6 @@ async function handlePasswordChange(event) {
 
 // Initialize password modal
 function initPasswordModal() {
-    // made by claude code
     const form = document.getElementById('password-form');
     if (form) {
         form.addEventListener('submit', handlePasswordChange);
@@ -436,7 +423,6 @@ function initPasswordModal() {
 
 // Main render function for user management view
 export async function renderUserManagementView() {
-    // made by claude code
     try {
         const users = await fetchAllUsers();
 

@@ -3,7 +3,6 @@ import { isAuthenticated, setToken } from '../utils/auth.js';
 
 /**
  * Render login form HTML
- * Made by Claude Code - updated for new design system
  */
 function renderLoginForm() {
     return `

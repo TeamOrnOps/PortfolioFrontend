@@ -1,7 +1,6 @@
 /* ============================================
    STICKY NAVIGATION COMPONENT
    Transparent on scroll with logo
-   Made by Claude Code
    ============================================ */
 
 .main-navigation {
@@ -40,13 +39,13 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    justify-self: start; /* made by claude code - align logo to left */
+    justify-self: start;
 }
 
 .nav-logo-image {
     height: 40px;
     width: auto;
-    opacity: 1; /* made by claude code - ensure logo is visible */
+    opacity: 1;
     transition: opacity var(--transition-base);
 }
 
@@ -60,7 +59,7 @@
     align-items: center;
     gap: var(--space-2);
     list-style: none;
-    justify-self: center; /* made by claude code - center filter buttons */
+    justify-self: center;
 }
 
 .nav-link {

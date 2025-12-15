@@ -1,7 +1,6 @@
 // ============================================
 // PRESENTATION VIEW (NEW UI/UX)
 // Public-facing portfolio with new design
-// Made by Claude Code
 // ============================================
 
 import { fetchProjectById, fetchAllProjectsPublic } from '../api.js';
@@ -23,7 +22,6 @@ import { renderComparisonSlider, getBeforeAfterImages } from '../components/comp
 // =============================
 
 function formatDate(dateStr) {
-    // made by claude code
     if (!dateStr) return '';
     const d = new Date(dateStr);
     if (Number.isNaN(d.getTime())) return dateStr;
@@ -35,7 +33,6 @@ function formatDate(dateStr) {
 }
 
 function getFeaturedImage(project) {
-    // made by claude code
     if (!project.images || project.images.length === 0) return null;
     const featured = project.images.find((img) => img.isFeatured);
     return featured || project.images[0];
@@ -62,7 +59,6 @@ function buildImageUrl(url) {
 // =============================
 
 function renderIntroSection() {
-    // made by claude code
     return `
         <section class="intro-section">
             <div class="container">
@@ -81,7 +77,6 @@ function renderIntroSection() {
 // =============================
 
 function renderProjectRow(project) {
-    // made by claude code
     const { beforeImage, afterImage } = getBeforeAfterImages(project);
 
     return `
@@ -111,7 +106,6 @@ function renderProjectRow(project) {
 // =============================
 
 function renderCategorySections(projects) {
-    // made by claude code
     const categories = getNavigationCategories();
 
     // Grupper projekter efter workType
@@ -154,7 +148,6 @@ function renderCategorySections(projects) {
 // =============================
 
 function renderFilterBar(categories, activeCategory = null) {
-    // made by claude code
     const filterButtons = categories
         .map(
             (cat) => `
@@ -185,7 +178,6 @@ function renderFilterBar(categories, activeCategory = null) {
 // =============================
 
 function renderProjectCard(project) {
-    // made by claude code
     const featured = getFeaturedImage(project);
     const imageUrl = featured ? buildImageUrl(featured.url) : null;
 
@@ -233,7 +225,6 @@ function renderProjectCard(project) {
 // =============================
 
 function renderProjectsOverview(projects, activeCategory = null) {
-    // made by claude code
     const categories = getNavigationCategories();
 
     // Get featured images (all projects, not filtered by category)
@@ -257,7 +248,6 @@ function renderProjectsOverview(projects, activeCategory = null) {
 // =============================
 
 function renderProjectDetail(project) {
-    // made by claude code
     const categories = getNavigationCategories();
     const featuredImage = getFeaturedImage(project);
     const featuredImageUrl = featuredImage ? buildImageUrl(featuredImage.url) : null;
@@ -386,7 +376,6 @@ function renderProjectDetail(project) {
 // =============================
 
 export async function renderPresentationView(params) {
-    // made by claude code
     const projectId = params?.id;
 
     // Get current category from URL params
@@ -458,7 +447,6 @@ export async function renderPresentationView(params) {
 // =============================
 
 function initSmoothScroll() {
-    // made by claude code
     // Add smooth scroll to navigation links
     const navLinks = document.querySelectorAll('[data-category]');
 
@@ -494,7 +482,6 @@ function initSmoothScroll() {
 // =============================
 
 window.applyPublicFilter = function (category) {
-    // made by claude code
     const newHash = category ? `#/projects?category=${category}` : '#/projects';
     window.location.hash = newHash;
 };

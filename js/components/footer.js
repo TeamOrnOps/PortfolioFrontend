@@ -1,7 +1,6 @@
 // ============================================
 // FOOTER COMPONENT
 // Generic footer with placeholder content
-// Made by Claude Code
 // ============================================
 
 /**
@@ -9,7 +8,6 @@
  * @returns {string} HTML string
  */
 export function renderFooter() {
-    // made by claude code
     const currentYear = new Date().getFullYear();
 
     return `
@@ -38,7 +36,6 @@ export function renderFooter() {
  * @returns {string} HTML string
  */
 export function renderFullFooter(footerData = {}) {
-    // made by claude code
     const currentYear = new Date().getFullYear();
 
     return `

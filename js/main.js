@@ -3,7 +3,6 @@ import { renderPresentationView } from './views/presentationview-new.js';
 import { renderLoginView } from './views/loginview.js';
 import { renderCreateProjectView } from './views/formulas/createProject.js';
 import { renderEditProjectView } from './views/formulas/editProject.js';
-// made by claude code - renamed and consolidated user management
 import { renderUserManagementView } from './views/admin/usermanagement.js';
 import { renderCreateUserView } from './views/admin/createuser.js';
 import { renderEditImageView } from './views/formulas/editImage.js';

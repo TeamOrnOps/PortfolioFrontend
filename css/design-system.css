@@ -1,7 +1,6 @@
 /* ============================================
    ALGENORD DESIGN SYSTEM
    Modern UI/UX Implementation
-   Made by Claude Code
    ============================================ */
 
 /* === COLOR PALETTE === */
@@ -176,7 +175,6 @@
 */
 
 /* === BASE RESET === */
-/* made by claude code */
 *,
 *::before,
 *::after {
@@ -201,7 +199,6 @@ body {
 }
 
 /* === TYPOGRAPHY STYLES === */
-/* made by claude code */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: var(--weight-bold);
@@ -250,7 +247,6 @@ a:hover {
 }
 
 /* === UTILITY CLASSES === */
-/* made by claude code */
 .container {
     width: 100%;
     max-width: var(--container-xl);

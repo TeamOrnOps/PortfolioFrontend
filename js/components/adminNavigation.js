@@ -1,7 +1,6 @@
 // ============================================
 // ADMIN NAVIGATION COMPONENT
 // Navigation bar for admin dashboard
-// Made by Claude Code
 // ============================================
 
 import { logout } from '../utils/auth.js';
@@ -11,7 +10,6 @@ import { logout } from '../utils/auth.js';
  * @returns {string} HTML string
  */
 export function renderAdminNavigation() {
-    // made by claude code
     return `
         <nav class="admin-navigation" id="admin-nav">
             <div class="admin-nav-container">
@@ -52,7 +50,6 @@ export function renderAdminNavigation() {
  * Initialize admin navigation functionality
  */
 export function initAdminNavigation() {
-    // made by claude code
     const nav = document.getElementById('admin-nav');
     if (!nav) {
         console.log('Admin navigation element not found');
@@ -66,7 +63,6 @@ export function initAdminNavigation() {
  * Handle admin logout
  */
 window.handleAdminLogout = function () {
-    // made by claude code
     const confirmed = confirm('Er du sikker på at du vil logge ud?');
 
     if (confirmed) {

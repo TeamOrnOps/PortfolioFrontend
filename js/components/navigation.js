@@ -1,7 +1,6 @@
 // ============================================
 // NAVIGATION COMPONENT
 // Sticky nav with scroll transparency & mobile menu
-// Made by Claude Code
 // ============================================
 
 /**
@@ -11,7 +10,6 @@
  * @returns {string} HTML string
  */
 export function renderNavigation(categories, activeCategory = null) {
-    // made by claude code
     // Normalize activeCategory: treat null, undefined, and empty string as the same
     const normalizedActive = activeCategory || null;
     console.log('[Navigation] Active category:', activeCategory, '→ Normalized:', normalizedActive);
@@ -115,7 +113,6 @@ export function renderNavigation(categories, activeCategory = null) {
  * - Mobile menu toggle
  */
 export function initNavigation() {
-    // made by claude code
     const nav = document.getElementById('main-nav');
     const navToggle = document.getElementById('nav-toggle');
     const navOverlay = document.getElementById('nav-overlay');
@@ -209,7 +206,6 @@ export function initNavigation() {
  * @returns {Array} Array of category objects
  */
 export function getNavigationCategories() {
-    // made by claude code
     return [
         { value: null, label: 'Alle' },
         { value: 'PAVING_CLEANING', label: 'Fliser' },
