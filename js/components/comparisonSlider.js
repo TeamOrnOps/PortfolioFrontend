@@ -31,9 +31,10 @@ export function renderComparisonSlider(beforeImage, afterImage, baseUrl = '') {
         console.log('[ComparisonSlider] Input URL:', imageUrl);
         if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
             console.log('[ComparisonSlider] Using full URL as-is:', imageUrl);
-            return imageUrl;  // Already full URL from backend
+            return imageUrl;
         }
-        const fullUrl = baseUrl ? `${baseUrl}${imageUrl}` : `http://localhost:8080${imageUrl}`;
+        //Uses relative URL
+        const fullUrl = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
         console.log('[ComparisonSlider] Built URL:', fullUrl);
         return fullUrl;
     };

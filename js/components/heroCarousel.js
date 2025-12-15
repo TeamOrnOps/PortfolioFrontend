@@ -20,7 +20,7 @@ function buildImageUrl(url) {
     }
     // Otherwise prepend localhost:8080 for backward compatibility
     // This handles any old relative URLs still in database
-    return `http://localhost:8080${url}`;
+    return url.startsWith('/') ? url : `/${url}`;
 }
 
 /**

@@ -1,7 +1,7 @@
 import { getToken, logout, redirectToLogin } from './utils/auth.js';
 
-const API_BASE_URL = 'http://localhost:8080/api';
-const AUTH_BASE_URL = 'http://localhost:8080/auth';
+const API_BASE_URL = '/api';
+const AUTH_BASE_URL = '/auth';
 
 /**
  * Generic fetch handler with JWT authentication and error handling
