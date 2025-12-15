@@ -1,0 +1,41 @@
+name: Deploy Frontend to Backend
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout frontend repo
+        uses: actions/checkout@v4
+        with:
+          path: frontend-source
+
+      - name: Checkout backend repo
+        uses: actions/checkout@v4
+        with:
+          repository: TeamOrnOps/PortfolioBackend
+          token: ${{ secrets.BACKEND_REPO_TOKEN }}
+          path: backend
+
+      - name: Copy frontend files to backend/frontend
+        run: |
+          rm -rf backend/frontend
+          mkdir -p backend/frontend
+          cp -r frontend-source/* backend/frontend/
+
+      - name: Commit and push to backend repo
+        run: |
+          cd backend
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add frontend/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m " Update frontend from TeamOrnOps/PortfolioFrontend@${{ github.sha }}"
+            git push
+          fi
