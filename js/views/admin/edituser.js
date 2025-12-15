@@ -154,7 +154,7 @@ function showFormMessage(message, isError = true) {
         messageDiv.textContent = message;
         messageDiv.className = `form-message ${isError ? 'error' : 'success'}`;
         messageDiv.style.display = 'block';
-        messageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+        messageDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 }
 

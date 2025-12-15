@@ -7,8 +7,10 @@ function renderHeroImage(projects, selectedWorkType) {
         return '';
     }
 
-    // Find first project with selected workType that has featured image
-    const projectWithHero = projects.find(project => project.workType === selectedWorkType && project.images?.some(img => img.isFeatured));
+   // find project with HERO img
+    const projectWithHero = projects.find(project =>
+        project.images?.some(img => img.isFeatured)
+    );
 
     if (!projectWithHero) {
         return '';
@@ -19,7 +21,7 @@ function renderHeroImage(projects, selectedWorkType) {
 
     return `
         <section class="hero-section">
-            <img src="${heroImage.url}" alt="${projectWithHero.title}" class="hero-image" />
+            <img src="http://localhost:8080${heroImage.url}" alt="${projectWithHero.title}" class="hero-image" />
             <div class="hero-overlay">
                 <h2>${projectWithHero.workType}</h2>
             </div>
@@ -76,8 +78,8 @@ function renderWorkTypeFilters(selectedWorkType, selectedCustomerType, sortOrder
                     class="filter-dropdown"
                     onchange="window.applyFilters('${selectedWorkType || ''}', '${selectedCustomerType || ''}', this.value)"
                 >
-                    <option value="executionDate,desc" ${sortOrder === 'executionDate,desc' ? 'selected' : ''}>Newest First</option>
-                    <option value="executionDate,asc" ${sortOrder === 'executionDate,asc' ? 'selected' : ''}>Oldest First</option>
+                    <option value="desc" ${sortOrder === 'desc' ? 'selected' : ''}>Newest First</option>
+                    <option value="asc" ${sortOrder === 'asc' ? 'selected' : ''}>Oldest First</option>
                 </select>
             </div>
         </div>
@@ -102,36 +104,24 @@ function renderProjectCard(project) {
 
     return `
         <article class="project-row">
-        
-            
-            <!-- LEFT SIDE -->
+            <!-- LEFT SIDE: Before/After Slider -->
             <div class="project-row-images">
-
-    <div class="project-image-block">
-        <h4>Før</h4>
-        <img src="${beforeUrl}" class="project-image" alt="Før billede">
-
-        ${beforeImage ? `
-            <button class="btn btn-small"
-                    onclick="window.location.hash = '#/edit-image/${project.id}/${beforeImage.id}'">
-                Rediger før-billede
-            </button>
-        ` : ''}
-    </div>
-
-    <div class="project-image-block">
-        <h4>Efter</h4>
-        <img src="${afterUrl}" class="project-image" alt="Efter billede">
-
-        ${afterImage ? `
-            <button class="btn btn-small"
-                    onclick="window.location.hash = '#/edit-image/${project.id}/${afterImage.id}'">
-                Rediger efter-billede
-            </button>
-        ` : ''}
-    </div>
-
-</div>
+                <img-comparison-slider class="comparison-slider">
+                    <img slot="first" src="${beforeUrl}" alt="Before" />
+                    <img slot="second" src="${afterUrl}" alt="After" />
+                    <div slot="handle" class="slider-handle">
+                        <svg width="40" height="40" viewBox="0 0 40 40">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M15 20l5-5v3h10v-3l5 5-5 5v-3H20v3l-5-5z" fill="#333"/>
+                        </svg>
+                    </div>
+                </img-comparison-slider>
+                
+                <div class="image-labels">
+                    <span class="label-before">Før</span>
+                    <span class="label-after">Efter</span>
+                </div>
+            </div>
          
 
             <!-- RIGHT SIDE -->
@@ -176,12 +166,12 @@ function renderEmptyState() {
 }
 
 // Main render function for front page
-export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = 'executionDate,desc') {
+export async function renderFrontPage(selectedWorkType = null, selectedCustomerType = null, sortOrder = 'desc') {
     // load saved filters from localStorage
     const savedFilters = JSON.parse(localStorage.getItem('projectFilters') || '{}');
     selectedWorkType = selectedWorkType || savedFilters.workType || null;
     selectedCustomerType = selectedCustomerType || savedFilters.customerType || null;
-    sortOrder = sortOrder || savedFilters.sortOrder || 'executionDate,desc';
+    sortOrder = sortOrder || savedFilters.sortOrder || 'desc';
 
     try {
         // Fetch all projects (with optional filters)
@@ -250,7 +240,7 @@ window.applyFilters = function (workType, customerType, sortOrder) {
     // Store selected filter and re-render
     const selectedWorkType = workType || null;
     const selectedCustomerType = customerType || null;
-    const selectedSort = sortOrder || 'executionDate,desc';
+    const selectedSort = sortOrder || 'desc';
 
     //save to localstorage
     localStorage.setItem('projectFilters', JSON.stringify({

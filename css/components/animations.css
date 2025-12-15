@@ -1,0 +1,345 @@
+/* ============================================
+   ANIMATIONS & MICROINTERACTIONS
+   Subtle animations for enhanced UX
+   ============================================ */
+
+/* === FADE IN ANIMATIONS === */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === SLIDE ANIMATIONS === */
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* === SCALE ANIMATIONS === */
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* === SHIMMER/LOADING ANIMATION === */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* === PULSE ANIMATION === */
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* === UTILITY CLASSES === */
+
+/* Fade animations */
+.animate-fade-in {
+    animation: fadeIn var(--transition-base) ease-out;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp var(--transition-slow) ease-out;
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown var(--transition-slow) ease-out;
+}
+
+/* Slide animations */
+.animate-slide-in-left {
+    animation: slideInLeft var(--transition-slow) ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight var(--transition-slow) ease-out;
+}
+
+/* Scale animation */
+.animate-scale-in {
+    animation: scaleIn var(--transition-base) ease-out;
+}
+
+/* Animation delays (for staggered effects) */
+.delay-100 {
+    animation-delay: 100ms;
+}
+
+.delay-200 {
+    animation-delay: 200ms;
+}
+
+.delay-300 {
+    animation-delay: 300ms;
+}
+
+.delay-400 {
+    animation-delay: 400ms;
+}
+
+.delay-500 {
+    animation-delay: 500ms;
+}
+
+/* === HOVER EFFECTS === */
+
+/* Lift effect */
+.hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Grow effect */
+.hover-grow {
+    transition: transform var(--transition-fast);
+}
+
+.hover-grow:hover {
+    transform: scale(1.05);
+}
+
+/* Glow effect */
+.hover-glow {
+    transition: box-shadow var(--transition-base);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* === LOADING STATES === */
+
+/* Skeleton loader */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--color-gray-100) 0%,
+        var(--color-gray-50) 50%,
+        var(--color-gray-100) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+    border-radius: var(--radius-md);
+}
+
+/* Pulse loader */
+.loading-pulse {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Spinner */
+.spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--color-gray-200);
+    border-top-color: var(--color-primary);
+    border-radius: var(--radius-full);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-small {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+/* === SMOOTH SCROLLING === */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Disable smooth scroll when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* === PAGE TRANSITIONS === */
+
+/* Fade in content on page load */
+.page-content {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.stagger-children > *:nth-child(2) {
+    animation-delay: 100ms;
+}
+
+.stagger-children > *:nth-child(3) {
+    animation-delay: 200ms;
+}
+
+.stagger-children > *:nth-child(4) {
+    animation-delay: 300ms;
+}
+
+.stagger-children > *:nth-child(5) {
+    animation-delay: 400ms;
+}
+
+/* === IMAGE LOADING === */
+
+/* Fade in images when loaded */
+img {
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+img.loaded,
+img[loading="eager"] {
+    opacity: 1;
+}
+
+/* === FOCUS STATES (Accessibility) === */
+
+/* Custom focus ring */
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Remove default focus for mouse users (only show for keyboard) */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* === BUTTON PRESS ANIMATION === */
+
+button,
+.btn {
+    transition: transform var(--transition-fast);
+}
+
+button:active,
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* === RIPPLE EFFECT (optional, subtle) === */
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.ripple-effect:active::after {
+    width: 100px;
+    height: 100px;
+    animation: ripple 0.6s ease-out;
+}

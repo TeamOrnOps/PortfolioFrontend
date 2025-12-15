@@ -91,6 +91,7 @@ export function getCurrentUser() {
     }
 }
 
+// TODO: Unused function - consider removing
 /**
  * Check if current user has specific role
  * @param {string} role

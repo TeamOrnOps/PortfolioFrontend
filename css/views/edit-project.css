@@ -1,0 +1,151 @@
+/* ============================================
+   EDIT PROJECT FORM STYLES
+   Uses design system from design-system.css
+   ============================================ */
+
+.edit-project-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4);
+}
+
+.edit-project-container h2 {
+    margin: 0 0 var(--space-6) 0;
+    color: var(--color-text-primary);
+    font-size: var(--text-3xl);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-primary);
+}
+
+/* Form Grid Layout */
+.edit-grid {
+    display: grid;
+    gap: var(--space-6);
+    background: var(--color-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+}
+
+.edit-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.edit-grid label {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+}
+
+.edit-grid input[type="text"],
+.edit-grid input[type="date"],
+.edit-grid textarea,
+.edit-grid select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-family: var(--font-primary);
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.edit-grid input:focus,
+.edit-grid textarea:focus,
+.edit-grid select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.edit-grid textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: var(--leading-normal);
+}
+
+/* Form Buttons */
+.edit-grid .btn {
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    font-family: var(--font-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    justify-self: start;
+}
+
+.edit-grid .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.edit-grid .btn-primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.edit-grid .btn-primary:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.edit-grid .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.edit-grid .btn-secondary {
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    border: 2px solid var(--color-border-light);
+}
+
+.edit-grid .btn-secondary:hover:not(:disabled) {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-medium);
+}
+
+/* Form Message */
+.edit-grid p#edit-project-message {
+    margin: 0;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: var(--weight-medium);
+    font-size: var(--text-sm);
+}
+
+/* Button Group */
+.edit-grid > .btn:nth-last-child(3),
+.edit-grid > .btn:nth-last-child(2) {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .edit-project-container {
+        padding: var(--space-6) var(--space-4);
+    }
+
+    .edit-grid {
+        padding: var(--space-4);
+    }
+
+    .edit-grid .btn {
+        width: 100%;
+    }
+}
