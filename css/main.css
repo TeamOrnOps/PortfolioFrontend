@@ -1,0 +1,33 @@
+/* ============================================
+   ALGENORD PORTFOLIO - MAIN STYLESHEET
+   Centralized CSS import file
+   ============================================ */
+
+/* === 1. DESIGN SYSTEM (Foundation) === */
+/* Design tokens: colors, typography, spacing, shadows, etc. */
+@import url('design-system.css');
+
+/* === 2. COMPONENTS === */
+/* Reusable UI components */
+@import url('components/navigation.css');
+@import url('components/hero-carousel.css');
+@import url('components/filter-bar.css');
+@import url('components/project-grid.css');
+@import url('components/image-slider.css');
+@import url('components/footer.css');
+@import url('components/login.css');
+@import url('components/admin-navigation.css');
+@import url('components/animations.css');
+
+/* === 3. VIEWS === */
+/* Page-specific styles */
+@import url('views/create-project.css');
+@import url('views/edit-project.css');
+@import url('views/admin.css');
+@import url('views/admin-dashboard.css');
+@import url('views/presentationview-new.css');
+
+/* === 4. LEGACY === */
+/* Old styles - will be gradually migrated */
+/* Note: Loaded last so new styles take precedence */
+/* @import url('style.css'); */

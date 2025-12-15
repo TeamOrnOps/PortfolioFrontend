@@ -1,0 +1,130 @@
+/* ============================================
+   ADMIN NAVIGATION COMPONENT
+   Navigation bar for admin dashboard
+   ============================================ */
+
+/* Admin navigation */
+.admin-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-sticky);
+    background-color: var(--color-white);
+    border-bottom: 2px solid var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Navigation inner container */
+.admin-nav-container {
+    max-width: var(--container-2xl);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo section */
+.admin-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+}
+
+.admin-nav-logo-image {
+    height: 40px;
+    width: auto;
+    opacity: 1;
+}
+
+.admin-nav-title {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* Actions section */
+.admin-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+/* Navigation buttons */
+.admin-nav-btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    font-family: var(--font-primary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    white-space: nowrap;
+}
+
+.admin-nav-btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.admin-nav-btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.admin-nav-btn-secondary {
+    background-color: var(--color-gray-100);
+    color: var(--color-text-primary);
+}
+
+.admin-nav-btn-secondary:hover {
+    background-color: var(--color-gray-200);
+}
+
+.admin-nav-btn-logout {
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-light);
+}
+
+.admin-nav-btn-logout:hover {
+    background-color: var(--color-gray-50);
+    border-color: var(--color-gray-400);
+}
+
+/* Spacer to prevent content hiding under fixed nav */
+.admin-nav-spacer {
+    height: 72px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 767px) {
+    .admin-nav-container {
+        flex-direction: column;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .admin-nav-title {
+        font-size: var(--text-base);
+    }
+
+    .admin-nav-logo-image {
+        height: 32px;
+    }
+
+    .admin-nav-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .admin-nav-spacer {
+        height: 120px;
+    }
+}
