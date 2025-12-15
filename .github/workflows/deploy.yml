@@ -2,40 +2,38 @@ name: Deploy Frontend to Backend
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  sync-and-deploy:
+  sync-and-trigger:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout frontend repo
+      - name: Checkout frontend repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          path: frontend-source
+          path: frontend-repo
 
-      - name: Checkout backend repo
+      - name: Checkout backend repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: TeamOrnOps/PortfolioBackend
           token: ${{ secrets.BACKEND_REPO_TOKEN }}
-          path: backend
+          path: backend-repo
 
-      - name: Copy frontend files to backend/frontend
+      - name: Copy frontend to backend repository
         run: |
-          rm -rf backend/frontend
-          mkdir -p backend/frontend
-          cp -r frontend-source/* backend/frontend/
+          rm -rf backend-repo/frontend
+          mkdir -p backend-repo/frontend
+          cp -r frontend-repo/* backend-repo/frontend/
+          # Remove .git folder from copied frontend
+          rm -rf backend-repo/frontend/.git
 
-      - name: Commit and push to backend repo
+      - name: Commit and push frontend changes to backend
         run: |
-          cd backend
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add frontend/
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "🎨 Update frontend from TeamOrnOps/PortfolioFrontend@${{ github.sha }}"
-            git push
-          fi
+          cd backend-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f frontend/
+          git commit -m "Sync frontend from PortfolioFrontend" || echo "No changes to commit"
+          git push
