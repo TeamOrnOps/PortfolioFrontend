@@ -10,12 +10,12 @@ jobs:
 
     steps:
       - name: Checkout frontend repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           path: frontend-source
 
       - name: Checkout backend repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: TeamOrnOps/PortfolioBackend
           token: ${{ secrets.BACKEND_REPO_TOKEN }}
@@ -36,6 +36,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m " Update frontend from TeamOrnOps/PortfolioFrontend@${{ github.sha }}"
+            git commit -m "🎨 Update frontend from TeamOrnOps/PortfolioFrontend@${{ github.sha }}"
             git push
           fi
