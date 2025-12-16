@@ -1,4 +1,4 @@
-name: Deploy Frontend to Backend
+name: Build and Deploy Frontend
 
 on:
   push:
@@ -6,34 +6,34 @@ on:
       - main
 
 jobs:
-  sync-and-trigger:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout frontend repository
+      - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
-          path: frontend-repo
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout backend repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Build and push frontend image
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
         with:
-          repository: TeamOrnOps/PortfolioBackend
-          token: ${{ secrets.BACKEND_REPO_TOKEN }}
-          path: backend-repo
-          ref: main  # ✅ TILFØJET: Checkout main branch
+          context: .
+          push: true
+          tags: ghcr.io/teamornops/portfolio-frontend:latest
 
-      - name: Copy frontend to backend repository
-        run: |
-          rm -rf backend-repo/frontend
-          mkdir -p backend-repo/frontend
-          cp -r frontend-repo/* backend-repo/frontend/
-          rm -rf backend-repo/frontend/.git
-
-      - name: Commit and push frontend changes to backend
-        run: |
-          cd backend-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f frontend/
-          git commit -m "Sync frontend from PortfolioFrontend" || echo "No changes to commit"
-          git push origin main  # ÆNDRET: Specifik main branch
+      - name: Deploy to server
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/algenordportfolio
+            docker compose pull frontend
+            docker compose up -d frontend
+            docker image prune -f
