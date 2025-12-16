@@ -183,6 +183,33 @@ export async function updateImageMetadata(projectId, imageId, updateData) {
     }, true); // Requires auth
 }
 
+export async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return apiFetch(
+        `http://localhost:8080/api/projects/upload`,
+        {
+            method: 'POST',
+            body: formData
+        },
+        true
+    );
+}
+export async function updateImageUrl(projectId, imageId, url) {
+    return apiFetch(
+        `http://localhost:8080/api/projects/${projectId}/images/${imageId}/url`,
+        {
+            method: 'PUT',
+            body: JSON.stringify({ url })
+        },
+        true
+    );
+}
+
+
+
+
 /**
  * Delete image from project
  * @param {number} projectId
