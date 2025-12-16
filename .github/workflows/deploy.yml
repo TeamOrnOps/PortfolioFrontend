@@ -20,13 +20,13 @@ jobs:
           repository: TeamOrnOps/PortfolioBackend
           token: ${{ secrets.BACKEND_REPO_TOKEN }}
           path: backend-repo
+          ref: main  # ✅ TILFØJET: Checkout main branch
 
       - name: Copy frontend to backend repository
         run: |
           rm -rf backend-repo/frontend
           mkdir -p backend-repo/frontend
           cp -r frontend-repo/* backend-repo/frontend/
-          # Remove .git folder from copied frontend
           rm -rf backend-repo/frontend/.git
 
       - name: Commit and push frontend changes to backend
@@ -36,4 +36,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -f frontend/
           git commit -m "Sync frontend from PortfolioFrontend" || echo "No changes to commit"
-          git push
+          git push origin main  # ÆNDRET: Specifik main branch
